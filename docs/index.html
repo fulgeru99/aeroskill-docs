@@ -27,62 +27,43 @@
     <div id="app">Loading…</div>
 
     <style>
-      /* ── Cover page — Aeroskill Club navy palette ── */
+      /* ── Cover page — matches the vue theme (white, clean, navy accents) ── */
       section.cover {
-        background: #1c2d50 !important;
-        /* override the default random-gradient Docsify applies */
+        background: #ffffff !important;
         background-image: none !important;
       }
-      section.cover .cover-main h1 {
-        color: #ffffff;
-        font-size: 3rem;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-      }
-      section.cover .cover-main blockquote p {
-        color: rgba(255, 255, 255, 0.75);
-        font-size: 1.1rem;
-      }
-      section.cover .cover-main ul {
-        list-style: none;
-        padding: 0;
-      }
-      section.cover .cover-main ul li {
-        color: rgba(255, 255, 255, 0.85);
-        margin: 0.4rem 0;
-        font-size: 1rem;
-      }
-      /* Primary button (first link → Codex) */
-      section.cover .cover-main a.anchor {
-        display: none; /* hide the # anchor Docsify injects next to h1 */
-      }
-      section.cover .cover-main .cover-main > p > a,
-      section.cover a[href]:not(.anchor) {
-        border: 2px solid rgba(255, 255, 255, 0.4);
-        border-radius: 4px;
-        color: #ffffff;
-        padding: 0.6rem 1.6rem;
-        font-weight: 600;
-        text-decoration: none;
-        transition: background 0.2s, border-color 0.2s;
-      }
-      /* The first CTA button gets the solid navy-lighter fill */
-      section.cover .cover-main p:last-of-type a:first-child {
-        background: #ffffff;
-        color: #1c2d50;
-        border-color: #ffffff;
-      }
-      section.cover .cover-main p:last-of-type a:first-child:hover {
-        background: #e8edf5;
-        border-color: #e8edf5;
-      }
-      section.cover .cover-main p:last-of-type a:last-child:hover {
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(255, 255, 255, 0.7);
-      }
-      /* Hide the default cover background mask */
       section.cover .cover-background {
         opacity: 0 !important;
+      }
+      section.cover .cover-main h1 {
+        color: #102844;
+        font-size: 2.8rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+      }
+      section.cover .cover-main blockquote p {
+        color: #4a5568;
+        font-size: 1.05rem;
+      }
+      section.cover .cover-main ul li {
+        color: #2d3748;
+      }
+      /* Both CTA buttons — identical outlined navy style */
+      section.cover .cover-main p:last-of-type a {
+        display: inline-block;
+        border: 2px solid #102844;
+        border-radius: 4px;
+        color: #102844 !important;
+        background: #ffffff;
+        padding: 0.55rem 1.5rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.18s, color 0.18s;
+        box-shadow: none;
+      }
+      section.cover .cover-main p:last-of-type a:hover {
+        background: #102844;
+        color: #ffffff !important;
       }
 
       /* ── Mermaid diagram containers ── */

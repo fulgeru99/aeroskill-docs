@@ -8,16 +8,16 @@ The documents are ordered from product direction to implementation detail.
 
 | # | Document | Purpose |
 | ---: | --- | --- |
-| 01 | [01. aeroskill-club-product-vision.md](<./01. aeroskill-club-product-vision.md>) | Defines the product vision, audiences, promise, and success definition |
-| 02 | [02. aeroskill-club-product-strategy.md](<./02. aeroskill-club-product-strategy.md>) | Defines the V1 strategy: polished membership club with CRM foundation |
-| 03 | [03. aeroskill-club-v1-implementation-plan.md](<./03. aeroskill-club-v1-implementation-plan.md>) | Summarizes V1 scope, priorities, modules, entities, and build order |
-| 04 | [04. aeroskill-club-v1-prd.md](<./04. aeroskill-club-v1-prd.md>) | Full product requirements document for V1 |
-| 05 | [05. aeroskill-club-v1-information-architecture.md](<./05. aeroskill-club-v1-information-architecture.md>) | Defines navigation, route structure, screen groups, and IA rules |
-| 06 | [06. aeroskill-club-v1-database-schema.md](<./06. aeroskill-club-v1-database-schema.md>) | Defines tables, fields, relationships, statuses, indexes, and lifecycle rules |
-| 07 | [07. aeroskill-club-v1-user-flows.md](<./07. aeroskill-club-v1-user-flows.md>) | Details join, pay, renew, card, benefit, member admin, partner, and contract flows |
-| 08 | [08. aeroskill-club-v1-design-system-direction.md](<./08. aeroskill-club-v1-design-system-direction.md>) | Defines visual tone, colors, typography, components, imagery, and UI direction |
-| 09 | [09. aeroskill-club-v1-technical-architecture.md](<./09. aeroskill-club-v1-technical-architecture.md>) | Defines stack, auth, payments, email, storage, deployment, admin access, and security |
-| 10 | [10. aeroskill-club-v1-milestone-roadmap.md](<./10. aeroskill-club-v1-milestone-roadmap.md>) | Breaks V1 into implementation milestones and deliverables |
+| 01 | [Product Vision](Codex/01.%20aeroskill-club-product-vision.md) | Defines the product vision, audiences, promise, and success definition |
+| 02 | [Product Strategy](Codex/02.%20aeroskill-club-product-strategy.md) | Defines the V1 strategy: polished membership club with CRM foundation |
+| 03 | [Implementation Plan](Codex/03.%20aeroskill-club-v1-implementation-plan.md) | Summarizes V1 scope, priorities, modules, entities, and build order |
+| 04 | [PRD](Codex/04.%20aeroskill-club-v1-prd.md) | Full product requirements document for V1 |
+| 05 | [Information Architecture](Codex/05.%20aeroskill-club-v1-information-architecture.md) | Defines navigation, route structure, screen groups, and IA rules |
+| 06 | [Database Schema](Codex/06.%20aeroskill-club-v1-database-schema.md) | Defines tables, fields, relationships, statuses, indexes, and lifecycle rules |
+| 07 | [User Flows](Codex/07.%20aeroskill-club-v1-user-flows.md) | Details join, pay, renew, card, benefit, member admin, partner, and contract flows |
+| 08 | [Design System](Codex/08.%20aeroskill-club-v1-design-system-direction.md) | Defines visual tone, colors, typography, components, imagery, and UI direction |
+| 09 | [Technical Architecture](Codex/09.%20aeroskill-club-v1-technical-architecture.md) | Defines stack, auth, payments, email, storage, deployment, admin access, and security |
+| 10 | [Milestone Roadmap](Codex/10.%20aeroskill-club-v1-milestone-roadmap.md) | Breaks V1 into implementation milestones and deliverables |
 
 ## Recommended Reading Order
 
