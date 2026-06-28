@@ -27,11 +27,68 @@
     <div id="app">Loading…</div>
 
     <style>
-      /* Docsify styles inner-text as a bold link; keep the mermaid container normal. */
+      /* ── Cover page — Aeroskill Club navy palette ── */
+      section.cover {
+        background: #1c2d50 !important;
+        /* override the default random-gradient Docsify applies */
+        background-image: none !important;
+      }
+      section.cover .cover-main h1 {
+        color: #ffffff;
+        font-size: 3rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+      section.cover .cover-main blockquote p {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 1.1rem;
+      }
+      section.cover .cover-main ul {
+        list-style: none;
+        padding: 0;
+      }
+      section.cover .cover-main ul li {
+        color: rgba(255, 255, 255, 0.85);
+        margin: 0.4rem 0;
+        font-size: 1rem;
+      }
+      /* Primary button (first link → Codex) */
+      section.cover .cover-main a.anchor {
+        display: none; /* hide the # anchor Docsify injects next to h1 */
+      }
+      section.cover .cover-main .cover-main > p > a,
+      section.cover a[href]:not(.anchor) {
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-radius: 4px;
+        color: #ffffff;
+        padding: 0.6rem 1.6rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.2s, border-color 0.2s;
+      }
+      /* The first CTA button gets the solid navy-lighter fill */
+      section.cover .cover-main p:last-of-type a:first-child {
+        background: #ffffff;
+        color: #1c2d50;
+        border-color: #ffffff;
+      }
+      section.cover .cover-main p:last-of-type a:first-child:hover {
+        background: #e8edf5;
+        border-color: #e8edf5;
+      }
+      section.cover .cover-main p:last-of-type a:last-child:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.7);
+      }
+      /* Hide the default cover background mask */
+      section.cover .cover-background {
+        opacity: 0 !important;
+      }
+
+      /* ── Mermaid diagram containers ── */
       .markdown-section a.mermaid {
         font-weight: normal;
       }
-      /* Center rendered diagrams. */
       .markdown-section .mermaid {
         text-align: center;
         overflow-x: auto;
