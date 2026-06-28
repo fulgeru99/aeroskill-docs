@@ -2,10 +2,7 @@
 
 # Aeroskill Club
 
-> Build docs for a general aviation membership platform
-
-- 📘 **Codex** — product specifications, data models, and architecture
-- 📗 **Claude** — AI-assisted workflows, prompts, and implementation guides
+> Build docs for a general aviation membership platform.
 
 [Codex docs](Codex/README.md)
 [Claude docs](Claude/README.md)
