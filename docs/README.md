@@ -1,25 +1,13 @@
-# Aeroskill Docs
+# Aeroskill Club Docs
 
-> Documentation powered by [Docsify](https://docsify.js.org/), rendered straight from Markdown — with [Mermaid](https://mermaid.js.org/) diagram support.
+> Build documentation for a general aviation membership platform.
 
-Welcome 👋 This site is built from the Markdown files in the `docs/` folder of this repository. There is **no build step**: Docsify renders the `.md` files in the browser, and GitHub Pages serves them as a static site.
+Aeroskill Club helps people join, participate in, and benefit from a credible aviation club — while giving the club a structured CRM foundation for members, partners, sponsors, flight schools, aerodromes, associations, benefits, contracts, communications, and fleet records.
 
 ## Documentation sets
 
-- 📘 **[Codex](Codex/README.md)** — Codex documentation.
-- 📗 **[Claude](Claude/README.md)** — Claude documentation.
-
-## Mermaid works out of the box
-
-Open a ` ```mermaid ` code fence and it renders:
-
-```mermaid
-graph LR
-    A[Write Markdown] --> B[Push to GitHub]
-    B --> C[GitHub Pages]
-    C --> D[Docsify renders]
-    D --> E((Live docs))
-```
+- 📘 **[Codex](Codex/README.md)** — product specifications, data models, and architecture.
+- 📗 **[Claude](Claude/README.md)** — AI-assisted workflows, prompts, and implementation guides.
 
 ## Adding pages
 

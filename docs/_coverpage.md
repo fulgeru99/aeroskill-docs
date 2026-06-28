@@ -1,13 +1,13 @@
 <!-- _coverpage.md -->
 
-# Aeroskill Docs
+# Aeroskill Club
 
-> Markdown in. A documentation site out.
+> Build docs for a general aviation membership platform
 
-- 📝 Plain Markdown, no build step
-- 📈 Mermaid diagrams that just render
-- 🚀 Hosted free on GitHub Pages
+Aeroskill Club helps people join, participate in, and benefit from a credible aviation club — while giving the club a structured foundation for members, partners, sponsors, flight schools, aerodromes, associations, benefits, contracts, communications, and fleet records.
+
+- 📘 **Codex** — product specifications, data models, and architecture
+- 📗 **Claude** — AI-assisted workflows, prompts, and implementation guides
 
 [Codex docs](Codex/README.md)
 [Claude docs](Claude/README.md)
-[GitHub](https://github.com/fulgeru99/aeroskill-docs)
