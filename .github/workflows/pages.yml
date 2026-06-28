@@ -44,8 +44,8 @@ jobs:
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the whole repo (the Markdown + index.html are the site).
-          path: "."
+          # The site lives in docs/ (Markdown + index.html). Upload only that.
+          path: "./docs"
 
       - name: Deploy to GitHub Pages
         id: deployment

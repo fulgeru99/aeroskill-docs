@@ -8,5 +8,6 @@
 - 📈 Mermaid diagrams that just render
 - 🚀 Hosted free on GitHub Pages
 
-[Get Started](guide/getting-started.md)
+[Codex docs](Codex/README.md)
+[Claude docs](Claude/README.md)
 [GitHub](https://github.com/fulgeru99/aeroskill-docs)
