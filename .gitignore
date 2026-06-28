@@ -1,0 +1,7 @@
+# Local tooling / OS noise — none of this belongs in a no-build docs repo
+node_modules/
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

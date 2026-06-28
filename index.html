@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Aeroskill Docs</title>
+    <meta
+      name="description"
+      content="Aeroskill documentation — Markdown rendered with Docsify and Mermaid, served on GitHub Pages."
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+    />
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
+    <!-- Docsify v4 theme (vue). docsify@4 ships this at both /themes/ and /lib/themes/. -->
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
+    />
+    <!--
+      NOTE: mermaid v11 ships NO stylesheet (it inlines all styles into each SVG),
+      so there is intentionally no mermaid CSS <link> here. Adding one would 404.
+    -->
+  </head>
+  <body>
+    <div id="app">Loading…</div>
+
+    <style>
+      /* Docsify styles inner-text as a bold link; keep the mermaid container normal. */
+      .markdown-section a.mermaid {
+        font-weight: normal;
+      }
+      /* Center rendered diagrams. */
+      .markdown-section .mermaid {
+        text-align: center;
+        overflow-x: auto;
+      }
+    </style>
+
+    <!--
+      1) DOCSIFY CONFIG — defined in a CLASSIC script that runs BEFORE docsify
+      core and the plugin scripts below. This ordering is load-bearing:
+        - docsify's bundled search plugin self-registers with a BARE `$docsify`
+          reference (`$docsify.plugins = ...`), so window.$docsify MUST already
+          exist when that classic plugin script executes during parsing —
+          otherwise it throws "ReferenceError: $docsify is not defined" and the
+          search box silently never appears.
+        - Defining the config here (not in the deferred module below) also means
+          the plugin scripts append to THIS object's .plugins array and nothing
+          ever reassigns window.$docsify out from under them.
+      The Mermaid renderer references window.mermaid (set by the module below)
+      rather than a closure, and renders through a tiny queue so it works no
+      matter when the Mermaid ESM module finishes loading.
+    -->
+    <script>
+      // Per-diagram counter -> a fresh unique id for every render, so each
+      // diagram targets a brand-new placeholder div. No node is ever reused or
+      // tagged data-processed, which is what makes this immune to the docsify
+      // SPA "blank diagram on 2nd page" gotcha (issues #504/#836).
+      var mermaidSvgCounter = 0;
+      // Render requests that arrive before the Mermaid module has loaded wait here.
+      window.__mermaidQueue = [];
+
+      // Render `source` into #containerId. Async (mermaid.render returns a
+      // Promise); a .catch keeps one malformed diagram from blanking the page.
+      window.renderMermaid = function (svgId, containerId, source) {
+        var m = window.mermaid;
+        if (!m) {
+          window.__mermaidQueue.push([svgId, containerId, source]);
+          return;
+        }
+        m.render(svgId, source)
+          .then(function (out) {
+            var el = document.getElementById(containerId);
+            if (!el) return; // user navigated away before render resolved — fine
+            el.innerHTML = out.svg;
+            if (typeof out.bindFunctions === "function") {
+              out.bindFunctions(el); // wire up interactive/clickable nodes
+            }
+          })
+          .catch(function (err) {
+            var el = document.getElementById(containerId);
+            if (el) {
+              el.innerHTML =
+                '<pre style="color:#b00;white-space:pre-wrap">Mermaid error: ' +
+                String(err && err.message ? err.message : err) +
+                "</pre>";
+            }
+            console.error("Mermaid render failed:", err);
+          });
+      };
+
+      window.$docsify = {
+        name: "Aeroskill Docs",
+        repo: "https://github.com/fulgeru99/aeroskill-docs",
+        // Default routerMode is 'hash' — keep it for GitHub Pages project pages
+        // (fulgeru99.github.io/aeroskill-docs/#/...). Hash routing keeps the
+        // server returning the same index.html, so no basePath is needed. Do
+        // NOT switch to history mode on a project subpath without basePath.
+        loadSidebar: true, // loads _sidebar.md
+        loadNavbar: true, // loads _navbar.md
+        coverpage: true, // loads _coverpage.md
+        subMaxLevel: 2, // auto table-of-contents from page headings (levels 1-2)
+        auto2top: true, // scroll to top on every page navigation
+
+        // ---- Full-text search plugin config ----
+        search: {
+          maxAge: 86400000, // index cache TTL: 1 day
+          paths: "auto",
+          placeholder: "Type to search",
+          noData: "No results.",
+          depth: 3, // index headings down to H3
+        },
+
+        // ---- Copy-to-clipboard plugin config ----
+        copyCode: {
+          buttonText: "Copy",
+          errorText: "Error",
+          successText: "Copied",
+        },
+
+        // ---- Pagination plugin config ----
+        pagination: {
+          previousText: "Previous",
+          nextText: "Next",
+          crossChapter: true, // page across sidebar sections
+          crossChapterText: true, // show the chapter name in the prev/next label
+        },
+
+        // ---- Mermaid integration (custom renderer) ----
+        markdown: {
+          renderer: {
+            // docsify@4 (4.13.1) bundles marked v1, whose renderer.code uses the
+            // POSITIONAL signature (code, lang). The dual-read below also tolerates
+            // the object form code({ text, lang }) that docsify v5 will use, so a
+            // future @5 bump can't silently turn diagrams back into raw text.
+            code: function (code, lang) {
+              var source =
+                code !== null && typeof code === "object" ? code.text : code;
+              var language =
+                code !== null && typeof code === "object" ? code.lang : lang;
+
+              if (language === "mermaid") {
+                var svgId = "mermaid-svg-" + mermaidSvgCounter++;
+                var containerId = svgId + "-container";
+                // docsify's renderer.code MUST return a STRING synchronously, so
+                // return a placeholder div now and fill it asynchronously.
+                window.renderMermaid(svgId, containerId, source);
+                return '<div class="mermaid" id="' + containerId + '"></div>';
+              }
+
+              // Non-mermaid fenced blocks: fall through to docsify's default
+              // (Prism) highlighter so they still get syntax highlighting.
+              return this.origin.code.apply(this, arguments);
+            },
+          },
+        },
+      };
+    </script>
+
+    <!--
+      2) MERMAID — v11 is ESM-only, so it MUST be imported as a module (the old
+      UMD <script src=".../mermaid.min.js"> global from v8/v9 does NOT work with
+      the v10/v11 Promise-based API). Module scripts are deferred, so this runs
+      after parsing but before DOMContentLoaded (when docsify initializes),
+      guaranteeing window.mermaid is set before the first diagram renders. We
+      drive every render ourselves (startOnLoad:false) and flush anything that
+      queued before the module loaded.
+    -->
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: false });
+      window.mermaid = mermaid;
+      // Flush any diagrams whose render was requested before mermaid loaded.
+      var q = window.__mermaidQueue || [];
+      window.__mermaidQueue = [];
+      q.forEach(function (a) {
+        window.renderMermaid(a[0], a[1], a[2]);
+      });
+    </script>
+
+    <!--
+      3) DOCSIFY CORE (v4, currently 4.13.1). Pinned to @4 deliberately: v5 is
+      release-candidate only and moves the plugin/theme paths and changes the
+      renderer.code signature. Load order matters — core MUST come AFTER
+      window.$docsify is defined above and BEFORE the plugins below.
+    -->
+    <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+
+    <!-- 4) Built-in plugins (ship inside docsify@4 at lib/plugins/) -->
+    <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
+
+    <!-- 5) External plugins (version-pinned) -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@3/dist/docsify-copy-code.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-pagination@2/dist/docsify-pagination.min.js"></script>
+    <!-- GitHub-style callouts: renders `> [!NOTE] / [!TIP] / [!WARNING]` blockquotes as styled alerts. -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-plugin-flexible-alerts@1/dist/docsify-plugin-flexible-alerts.min.js"></script>
+
+    <!--
+      6) Extra Prism language grammars. Docsify bundles Prism core (markup/html,
+      css, clike, javascript work with no extra file). Add a component file ONLY
+      for languages used in the docs; without it those blocks render
+      unhighlighted (no error). These cover the languages used in the guides.
+    -->
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-yaml.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+  </body>
+</html>

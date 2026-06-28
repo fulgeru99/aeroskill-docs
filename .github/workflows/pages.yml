@@ -1,0 +1,52 @@
+name: Deploy Docsify site to GitHub Pages
+
+# OPTIONAL — only needed if you set Settings > Pages > Source = "GitHub Actions".
+# The simpler default ("Deploy from a branch") needs NO workflow; if you use it,
+# DELETE this file so it doesn't produce failing runs. The two Pages sources are
+# mutually exclusive.
+#
+# Publishes the repository as-is to GitHub Pages. There is no build step:
+# Docsify renders the Markdown in the browser, so we just upload the files.
+#
+# Triggers on manual dispatch by default to avoid failing runs before Pages is
+# switched to the "GitHub Actions" source. Once it is, uncomment the `push`
+# block below to auto-deploy on every push to main.
+
+on:
+  # push:
+  #   branches: [main]
+  workflow_dispatch:
+
+# Permissions needed by the official Pages deploy actions.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment; don't cancel an in-progress run.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload the whole repo (the Markdown + index.html are the site).
+          path: "."
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
