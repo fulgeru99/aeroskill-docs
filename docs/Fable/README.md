@@ -8,17 +8,17 @@ The suite is **research-grounded** (verified July 2026): Romanian PPL and rental
 
 | # | Document | One-liner |
 |---|----------|-----------|
-| 00 | [Foundation](00-foundation.md) | The canonical decisions everything else inherits — read first |
-| 01 | [Product Vision](01-product-vision.md) | Why we exist, who we serve, what success looks like |
-| 02 | [Product Strategy](02-product-strategy.md) | Positioning, tier & sponsor strategy, monetization, GTM, risks |
-| 03 | [Implementation Plan](03-implementation-plan.md) | Build philosophy, scope slices, milestones, solo Claude Code workflow |
-| 04 | [PRD](04-prd.md) | Detailed requirements per surface, with IDs & acceptance criteria |
-| 05 | [Information Architecture](05-information-architecture.md) | Sitemap, navigation, URL/i18n structure, RBAC access map |
-| 06 | [Database Schema](06-database-schema.md) | Entities, columns, relationships, ERD, RLS posture |
-| 07 | [User Flows](07-user-flows.md) | Step-by-step flows across all three surfaces |
-| 08 | [Design System](08-design-system.md) | Logo-driven brand, tokens, type, components, member card |
-| 09 | [Technical Infrastructure](09-technical-infrastructure.md) | Stack, services, environments, security/GDPR, deployment |
-| 10 | [Roadmap](10-roadmap.md) | Sequenced solo Claude Code build roadmap, phase by phase |
+| 00 | [Foundation](Fable/00-foundation.md) | The canonical decisions everything else inherits — read first |
+| 01 | [Product Vision](Fable/01-product-vision.md) | Why we exist, who we serve, what success looks like |
+| 02 | [Product Strategy](Fable/02-product-strategy.md) | Positioning, tier & sponsor strategy, monetization, GTM, risks |
+| 03 | [Implementation Plan](Fable/03-implementation-plan.md) | Build philosophy, scope slices, milestones, solo Claude Code workflow |
+| 04 | [PRD](Fable/04-prd.md) | Detailed requirements per surface, with IDs & acceptance criteria |
+| 05 | [Information Architecture](Fable/05-information-architecture.md) | Sitemap, navigation, URL/i18n structure, RBAC access map |
+| 06 | [Database Schema](Fable/06-database-schema.md) | Entities, columns, relationships, ERD, RLS posture |
+| 07 | [User Flows](Fable/07-user-flows.md) | Step-by-step flows across all three surfaces |
+| 08 | [Design System](Fable/08-design-system.md) | Logo-driven brand, tokens, type, components, member card |
+| 09 | [Technical Infrastructure](Fable/09-technical-infrastructure.md) | Stack, services, environments, security/GDPR, deployment |
+| 10 | [Roadmap](Fable/10-roadmap.md) | Sequenced solo Claude Code build roadmap, phase by phase |
 
 **Writing order differed from reading order:** the suite was authored in dependency order — `00 → 01 → 02 → 08 → 04 → 05/06 → 07 → 09 → 03 → 10` — because 03 and 10 plan over the full scope and had to be written last, even though they read early.
 

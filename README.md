@@ -2,7 +2,7 @@
 
 Documentation site built with [Docsify](https://docsify.js.org/) and served by GitHub Pages — plain Markdown, no build step, with [Mermaid](https://mermaid.js.org/) diagram rendering.
 
-Three independent, complete specification suites for the **Aeroskill Club** general-aviation membership platform: **Opus** (formerly "Claude"), **Fable**, and **Codex**.
+Four specification suites for the **Aeroskill Club** general-aviation membership platform: **Combined** (the synthesis — start here), plus the three independent originals it merges: **Opus** (formerly "Claude"), **Fable**, and **Codex**.
 
 ## Structure
 
@@ -12,7 +12,8 @@ docs/
 ├── .nojekyll       # stops GitHub Pages from running Jekyll
 ├── README.md       # site home page (includes the suite comparison)
 ├── _coverpage.md   # splash cover
-├── _sidebar.md     # navigation (Opus · Fable · Codex)
+├── _sidebar.md     # navigation (Combined · Opus · Fable · Codex)
+├── Combined/       # Synthesis suite — best of the three runs, on-brief
 ├── Opus/           # Opus spec suite (formerly Claude/)
 ├── Fable/          # Fable spec suite
 └── Codex/          # Codex spec suite
@@ -32,11 +33,11 @@ A cross-review (July 2026) profiled all three suites against the same 10-dimensi
 | Diagrams | **57** | 13 | 9 |
 | Distinctive strength | Deepest per-artifact spec craft | Verified research, brief-fidelity, consistency | Wireframes (64) + breadth |
 
-One-line summary: **Opus specified the most, Codex wrote the most, Fable verified the most.**
+One-line summary: **Opus specified the most, Codex wrote the most, Fable verified the most** — and **Combined** merges the three under explicit precedence rules (brief is law → verified research → deepest craft → breadth).
 
 ## Add documentation
 
-Drop `.md` files into `docs/Opus/`, `docs/Fable/`, or `docs/Codex/`, then link them in `docs/_sidebar.md`.
+Drop `.md` files into `docs/Combined/`, `docs/Opus/`, `docs/Fable/`, or `docs/Codex/`, then link them in `docs/_sidebar.md`.
 
 ## Publish on GitHub Pages
 

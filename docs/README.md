@@ -6,9 +6,10 @@ Aeroskill Club helps people join, participate in, and benefit from a credible av
 
 ## Documentation sets
 
-Three independent, complete specification suites for the same platform, written by three different AI authoring runs. They deliberately do not share content.
+Three independent specification suites were written for the same platform by three different AI authoring runs, then synthesized into a fourth:
 
-- 📘 **[Opus](Opus/README.md)** *(formerly "Claude")* — the most exhaustively specified suite: 114 ID'd requirements with Given/When/Then criteria, ~43 tables, 57 diagrams. Self-described concept/portfolio piece with its own pricing model (free / 490 / 1.490 RON).
+- 🏆 **[Combined](Combined/README.md)** — the synthesis suite: takes the deepest treatment of every topic from the three runs under explicit merge rules (brief is law → verified research → deepest craft → breadth). Brief-fit pricing (3000/4500/6000 RON), Fable's research base, Opus's Given/When/Then rigor and contrast matrix, Codex's wireframes and test catalog. **Start here.**
+- 📘 **[Opus](Opus/README.md)** *(formerly "Claude")* — the most exhaustively specified original suite: 114 ID'd requirements with Given/When/Then criteria, ~43 tables, 57 diagrams. Self-described concept/portfolio piece with its own pricing model (free / 490 / 1.490 RON).
 - 📙 **[Fable](Fable/README.md)** — the research-grounded suite: follows the locked brief (3 tiers at 3000 / 4500 / 6000 RON/year), 53 cited sources (Romanian law, market prices, payment fees, accessibility standards), current stack (Next.js 16), delivered-logo brand integration.
 - 📗 **[Codex](Codex/README.md)** — the broadest suite: ~250–300 requirements, 64 ASCII wireframes, strong schema and flow craft; leaves prices, currency, and jurisdiction as open questions.
 
@@ -60,6 +61,6 @@ One-line summary: **Opus specified the most, Codex wrote the most, Fable verifie
 
 ## Adding pages
 
-1. Drop a `.md` file into `docs/Opus/`, `docs/Fable/`, or `docs/Codex/`.
+1. Drop a `.md` file into `docs/Combined/`, `docs/Opus/`, `docs/Fable/`, or `docs/Codex/`.
 2. Link it in [`docs/_sidebar.md`](_sidebar.md) under the matching section.
 3. Commit and push — it's live.
