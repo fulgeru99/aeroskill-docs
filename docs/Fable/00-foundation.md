@@ -24,6 +24,24 @@ Fable is the third, self-contained specification set for the Aeroskill Club plat
 
 > **Note on writing order:** the suite was *written* in dependency order (00 → 01 → 02 → 08 → 04 → 05/06 → 07 → 09 → 03 → 10) because 03 and 10 plan over the full scope and therefore had to be written last, even though they read early.
 
+```mermaid
+flowchart TD
+    F00["00 Foundation"] --> F01["01 Vision"] --> F02["02 Strategy"] --> F04["04 PRD"]
+    F00 --> F08["08 Design system"]
+    F04 --> F05["05 Information architecture"]
+    F04 --> F06["06 Database schema"]
+    F05 --> F07["07 User flows"]
+    F06 --> F07
+    F04 --> F09["09 Infrastructure"]
+    F06 --> F09
+    F04 --> F03["03 Implementation plan"]
+    F05 --> F03
+    F06 --> F03
+    F09 --> F03
+    F03 --> F10["10 Roadmap"]
+```
+*Arrows = "was written from" — the dependency graph behind the writing order.*
+
 ---
 
 ## 2. Club identity & legal shape
@@ -31,6 +49,7 @@ Fable is the third, self-contained specification set for the Aeroskill Club plat
 | Fact | Decision |
 |------|----------|
 | Name | **Aeroskill Club** — always written as two words, "Club" capitalized. Abbreviation for internal identifiers: **ASC** |
+| Logo | Delivered: monochrome deep-navy lockup — "AEROSKILL ✈ CLUB" with an aircraft silhouette between the words. Brand navy is anchored from its ink (≈ `#1C3355`); usage rules and derived palette in 08 §1–2 |
 | Legal form | Romanian non-profit association (*asociație*), governed by OG 26/2000. Membership fees are annual association dues (*cotizație anuală*) |
 | Focus | **General aviation**: student pilots, PPL/LAPL holders, and aviation enthusiasts. Not airline/commercial aviation |
 | Market | Romania. Romanian-first product; English as secondary locale |

@@ -364,6 +364,23 @@ Admin CRM is Romanian-only (00 §4.4). Every mutating action here is audit-logge
 - AC2: Contracts: `active` → `expired` the day after `ends_on`.
 - AC3: All automatic transitions are audit-logged with job identity as actor.
 
+The member lifecycle these requirements implement (statuses per 00 §7.2):
+
+```mermaid
+stateDiagram-v2
+    [*] --> pending: application submitted (MEM-002)
+    pending --> active: payment confirmed + approved (MEM-007)
+    pending --> [*]: rejected (ADM-005) — data purged at +90d
+    active --> active: renewal (MEM-012) / upgrade (MEM-013)
+    active --> grace: ends_on + 1d (PLT-006)
+    grace --> active: renewal during grace — no gap (00 §3.2)
+    grace --> expired: ends_on + 31d (PLT-006)
+    expired --> active: rejoin — fresh anniversary (FLOW-04)
+    active --> archived: ADM-008 / erasure (ADM-035)
+    grace --> archived: ADM-008
+    expired --> archived: ADM-008
+```
+
 **PLT-007 — Audit logging** (M)
 - AC1: Every mutation in the admin CRM and every automatic transition writes an `audit_logs` row (actor, action, entity type + id, before/after diff, timestamp).
 - AC2: Audit rows are insert-only (no update/delete via any role).

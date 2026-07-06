@@ -4,32 +4,49 @@
 
 ---
 
-## 1. Logo-driven brand method
+## 1. Logo-driven brand
 
-The club has an existing logo; it is the single source of brand color. Until the final logo files are delivered (a tracked external dependency, 10 §dependencies), this document ships a complete **placeholder palette** so build work never blocks.
+**The logo has been delivered.** It is a horizontal lockup — the wordmark **AEROSKILL · CLUB** in a bold geometric uppercase sans, with a single-engine low-wing propeller-aircraft silhouette (banking pose) set between the two words — printed in **one color: deep navy** on white. That monochrome fact resolves the brand method:
 
-**Extraction process (run once, when the logo arrives):**
+- **`navy` (primary) is logo-derived:** anchored to the sampled logo ink ≈ **`#1C3355`**, mapped to `navy-800` below. Sampled from the delivered PNG — re-confirm against the source vector when it arrives (10 §3), but the palette is now live, not placeholder.
+- **`sky`, `signal`, and the Captain gold are *chosen complements*, not extractions** — the logo carries no second color. They are locked as club design decisions and always defer to navy in hierarchy: navy leads every composition, accents punctuate.
 
-1. Sample the logo's dominant dark, mid, and accent colors (SVG fill inspection, not screenshot eyedropping).
-2. Map them to the `primary`, `secondary`, and `accent` roles below and regenerate the 50–900 scales (uniform lightness steps in OKLCH, hue held from the sampled color).
-3. Re-run the contrast checks in §7 for every token pair used in components; adjust the 500/600 steps first if any pair fails.
-4. Update only `tokens.css` — components reference semantic tokens, never raw hex, so nothing else changes.
+```mermaid
+flowchart LR
+    LOGO["Logo ink (sampled)<br/>#1C3355"] --> NR["navy ramp 50-900<br/>OKLCH, hue held"]
+    CH["Chosen complements<br/>sky / signal / gold"] --> CR["accent ramps"]
+    NR --> SEM["Semantic aliases<br/>--background --primary --accent ..."]
+    CR --> SEM
+    SEM --> COMP["shadcn/ui components<br/>+ member card"]
+    COMP --> CK{"Contrast >= 4.5:1?"}
+    CK -- fail --> ADJ["Adjust 500/600 steps"] --> SEM
+    CK -- pass --> SHIP["tokens.css"]
+```
 
-> Everything below is flagged **PLACEHOLDER — re-derive from final logo**. The *structure* (roles, scales, semantic aliases) is final.
+### 1.1 Logo usage rules
+
+| Rule | Specification |
+|------|---------------|
+| Variants | **Primary:** navy lockup on white/light surfaces. **Reverse:** all-white lockup on `navy-800`+ surfaces (member card, footer, hero) — produced by recoloring the source vector, never by CSS-filtering the PNG |
+| Clearspace | ≥ the height of the aircraft glyph on all sides; nothing enters it |
+| Minimum size | Full lockup ≥ 140px wide on screen; below that use the **aircraft glyph alone** (doubles as favicon, watermark, loading mark) |
+| Placement | Public header left; member-card front top-left (reverse variant); email headers |
+| Don'ts | No colors other than navy/white, no stretching, no drop shadows, no navy lockup over photography without a light scrim |
+| Outstanding asset | The delivered file is raster (PNG) — obtain the source vector (SVG/AI) for the reverse variant, favicon set, and crisp card rendering (tracked in 10 §3) |
 
 ## 2. Color tokens
 
-### 2.1 Brand scales (placeholder)
+### 2.1 Brand scales (navy logo-derived; accents chosen)
 
 | Scale | Role | 500 value | Notes |
 |-------|------|-----------|-------|
-| `navy` | `primary` — headers, primary buttons, card base | `#2E5E96` | Deep aviation navy; 900 = `#0B1B30` |
-| `sky` | `secondary` — links, info, Cadet tier | `#3BA7E0` | Clear-sky blue |
-| `signal` | `accent` — CTAs, highlights, Pilot tier | `#F0731F` | High-visibility "signal orange" |
+| `navy` | `primary` — headers, primary buttons, card base | `#34568A` | **Logo-derived**; 800 = `#1C3355` (logo ink), 900 = `#12213A` |
+| `sky` | `secondary` — links, info, Cadet tier | `#3BA7E0` | Chosen complement: clear-sky blue |
+| `signal` | `accent` — CTAs, highlights, Pilot tier | `#F0731F` | Chosen complement: high-visibility "signal orange" |
 | `slate` | neutrals — text, borders, surfaces | `#64748B` | Standard slate ramp 50–900 |
 
-Full ramps (50, 100, 200, 300, 400, 500, 600, 700, 800, 900) generated in OKLCH with uniform lightness steps. Reference ramp for `navy`:
-`#EEF3F9 · #D7E2F0 · #AEC5E1 · #7FA3CD · #4F7EB5 · #2E5E96 · #1F4677 · #16345C · #102743 · #0B1B30`
+Full ramps (50, 100, 200, 300, 400, 500, 600, 700, 800, 900) generated in OKLCH with uniform lightness steps, hue held from the logo ink. `navy` ramp:
+`#EEF2F8 · #D8E1EE · #B0C3DD · #84A2C7 · #5578A6 · #34568A · #27446F · #203A5F · #1C3355 · #12213A`
 
 ### 2.2 Semantic aliases (what components actually use)
 

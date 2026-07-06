@@ -20,6 +20,21 @@
 
 Our defensible asset is the **two-sided network**: members make partner contracts worth signing; contracted benefits make membership worth renewing. No named player occupies the neutral buying-club position today.
 
+```mermaid
+flowchart LR
+    M["More members"] --> N["Stronger negotiating<br/>position"]
+    N --> C["Better partner<br/>contracts"]
+    C --> B["Richer contracted<br/>benefits"]
+    B --> V["Dues recouped at<br/>lower usage (§3 rule)"]
+    V --> R["Higher renewals<br/>+ referrals"]
+    R --> M
+    M -.-> S["Audience worth<br/>sponsoring"]
+    S -.-> REV["Sponsorship revenue"]
+    REV -.-> E["Events & club ops"]
+    E -.-> R
+```
+*The flywheel the whole platform exists to spin: solid arrows = membership loop, dotted = sponsor loop feeding it.*
+
 ### Pricing benchmark (researched)
 
 Membership organizations pilots already know charge an order of magnitude less than our tiers — because they sell *representation*, not *purchasing power*:

@@ -34,7 +34,22 @@ Effort unit: one Claude Code working session ≈ a focused half-day.
 | **S7 — Communication & automation** | Templates, campaigns, announcements, send log; cron engine: status transitions, dunning, expiry alerts | ADM-023–ADM-028, MEM-019, MEM-020, PLT-004 (full), PLT-005, PLT-006 | `email_templates`, `campaigns`, `campaign_sends` (mig 010) | `/admin/campaigns(/{id})`, `/admin/templates`, `/admin/send-log`, `/portal/announcements`, `/api/cron/daily` | 5–7 |
 | **S8 — Fleet, GDPR, hardening** | Fleet CRUD + public page; GDPR export/erasure; rate limiting, analytics, empty states, accessibility pass, restore drill | ADM-029, ADM-030, ADM-031, PUB-007, MEM-021, MEM-022, ADM-035, PLT-010, PLT-011, PLT-012 | `aircraft` (mig 009) | `/admin/fleet(/{id})`, `/fleet`, `/portal/settings` | 5–7 |
 
-Total: **42–59 sessions**. Slices are strictly ordered — each depends on the previous (S6 needs S5's CRM shell; S7 needs S6's contracts for expiry emails).
+Total: **42–59 sessions**. Slices are strictly ordered — each depends on the previous (S6 needs S5's CRM shell; S7 needs S6's contracts for expiry emails):
+
+```mermaid
+flowchart LR
+    subgraph M1["M1 — Private alpha"]
+        S0["S0 skeleton"] --> S1["S1 public site"] --> S2["S2 auth +<br/>application"] --> S3["S3 payments +<br/>activation"] --> S4["S4 portal +<br/>card"]
+    end
+    subgraph M2["M2 — Founding launch"]
+        S5["S5 admin core"] --> S6["S6 partners,<br/>contracts, benefits"]
+    end
+    subgraph M3["M3 — Public launch"]
+        S7["S7 comms +<br/>automation"] --> S8["S8 fleet, GDPR,<br/>hardening"]
+    end
+    S4 --> S5
+    S6 --> S7
+```
 
 ## 3. Milestones
 
@@ -75,7 +90,7 @@ Never cut: payments correctness (PLT-009), activation/status engine (PLT-006), c
 | Risk | Mitigation |
 |------|------------|
 | Stripe onboarding for the *asociație* stalls (02 R2) | Start Stripe activation paperwork during S0; S3 builds bank-transfer path first so alpha can run on transfers alone; Netopia plan B documented with real fees (00 §4.3) |
-| Logo/final brand arrives late (08 §1) | Placeholder palette is complete; swap is a token-file change |
+| Logo source vector arrives late (08 §1.1) | **Logo delivered** (navy lockup, PNG) and the palette is anchored to its ink; only the SVG/AI for the white variant + favicons is outstanding — raster fallbacks unblock everything until then |
 | Legal-page content (PUB-010/015) needs a lawyer | Commission during S1; ship with reviewed drafts no later than M2 |
 | Approval flow blocks alpha activations (ADM-005 full CRM lands in S5) | S3 ships the minimal approve action explicitly for this |
 | Cron/dunning correctness is date-sensitive | Unit-test the transition engine exhaustively (§1.6); staging cohort with compressed clock before M3 |

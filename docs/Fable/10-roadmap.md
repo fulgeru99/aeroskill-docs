@@ -20,6 +20,29 @@
 
 Total 42–59 sessions. Strictly sequential (03 §2); no phase starts before the previous phase's demo checkpoint passes.
 
+Indicative sequencing at ~4 sessions/week from an illustrative start date — durations are the 03 §2 midpoints, **not commitments**:
+
+```mermaid
+gantt
+    dateFormat YYYY-MM-DD
+    axisFormat %d.%m
+    section M1 Private alpha
+    P0 Walking skeleton          :p0, 2026-09-01, 6d
+    P1 Public website            :p1, after p0, 9d
+    P2 Auth and application      :p2, after p1, 9d
+    P3 Payments and activation   :p3, after p2, 11d
+    P4 Portal and card           :p4, after p3, 9d
+    M1 exit                      :milestone, m1, after p4, 0d
+    section M2 Founding launch
+    P5 Admin CRM core            :p5, after p4, 12d
+    P6 Partners and contracts    :p6, after p5, 12d
+    M2 exit                      :milestone, m2, after p6, 0d
+    section M3 Public launch
+    P7 Comms and automation      :p7, after p6, 11d
+    P8 Fleet GDPR hardening      :p8, after p7, 11d
+    M3 exit                      :milestone, m3, after p8, 0d
+```
+
 ## 2. Phases
 
 ### P0 — Walking skeleton
@@ -106,7 +129,7 @@ Total 42–59 sessions. Strictly sequential (03 §2); no phase starts before the
 | Stripe account activated for the *asociație* | P3 | Start paperwork during P0 (03 §6); bank-transfer rail is the hedge; Netopia documented plan B (00 §4.3) |
 | Club statute defines Cadet/Pilot/Captain as member categories with AG-set dues (OG 26/2000, 02 R12) | First real payment (M1) | Draft/amend statute with the lawyer alongside P1 legal pages |
 | Accountant's e-Factura SPV workflow for sponsorship invoices (mandatory for NGOs since 2025-07-01, 00 §2) | First sponsor contract (P6/M2) | Confirm process with the accountant during P5 |
-| Final logo files | P1 polish (placeholder OK until then) | Commission early; palette swap is token-only (08 §1) |
+| Logo **source vector** (SVG/AI) — the logo itself is delivered (navy lockup, PNG; palette anchored in 08 §1–2) | P4 card polish (raster fallback OK before) | Request from the designer: needed for the white/reverse variant, favicon set, and crisp card rendering (08 §1.1) |
 | Legal pages content (privacy/terms/cookies/accessibility) | P1 draft, reviewed by M2 | Lawyer review in parallel with P1–P5 |
 | Domain + DNS (`aeroskill.club` assumed, 09 §4) | P0 | Confirm and configure at P0 |
 | Club IBAN + entity data for `club_settings` | P3 | Available at association registration |

@@ -175,7 +175,25 @@ Matrix of role × area (roles locked in 00 §5). ✔ = full per PRD; **R** = rea
 
 \* Staff/admin are not members in v1; `/portal/*` redirects them to `/admin`. † Staff have no audit access; audit is admin-only (00 §5).
 
-Enforcement is dual-layer (PLT-002): the Next.js network boundary (`proxy.ts` in Next 16 — the renamed middleware) + server-action guards for routing, Supabase RLS as the data backstop (06 §RLS).
+Enforcement is dual-layer (PLT-002): the Next.js network boundary (`proxy.ts` in Next 16 — the renamed middleware) + server-action guards for routing, Supabase RLS as the data backstop (06 §RLS). The routing decision every request goes through:
+
+```mermaid
+flowchart TD
+    R["Incoming request"] --> L{"Locale prefix?"}
+    L -- "/en/*" --> EN["locale = en"] --> G
+    L -- "none" --> RO["locale = ro (default)"] --> G
+    G{"Route group?"}
+    G -- "public + verify/{token}" --> P["Render public page<br/>(anon RLS applies)"]
+    G -- "portal/*" --> A{"Authenticated?"}
+    G -- "admin/*" --> B{"Authenticated?"}
+    A -- no --> LI["302 → /login?next={path}"]
+    B -- no --> LI
+    A -- "member" --> PS["Portal — shaped by<br/>member status (§4)"]
+    A -- "staff / admin" --> RA["302 → /admin"]
+    B -- "member" --> F["403 (PUB-014)"]
+    B -- "staff" --> AD["Admin CRM<br/>(System pages → 403)"]
+    B -- "admin" --> AD2["Admin CRM, full"]
+```
 
 ## 6. Redirects & error handling
 

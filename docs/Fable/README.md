@@ -29,6 +29,9 @@ The suite is **research-grounded** (verified July 2026): Romanian PPL and rental
 - **Surfaces:** public website · member portal (profile, subscription, payment, digital member card with QR verification) · admin CRM (members, flight schools, associations, aerodromes, sponsors, benefits, contracts, communication, fleet).
 - **Stack:** Next.js 16 (LTS) + Supabase (Postgres/RLS, Auth, Storage) + Tailwind/shadcn + next-intl + Stripe (with bank-transfer fallback; Netopia plan B) + Resend + Vercel + Plausible.
 - **Roles:** visitor · `member` · `staff` · `admin`.
+- **Brand:** the delivered logo (monochrome navy "AEROSKILL ✈ CLUB" lockup) anchors the palette — navy ≈ `#1C3355` logo-derived, sky/signal/gold as chosen complements (08 §1–2).
+
+Every document carries **Mermaid diagrams** (suite map, flywheel, state machines, ERD, flows, architecture, Gantt) — they render natively on GitHub; the docsify site needs the mermaid plugin enabled to show them.
 
 ## Using this suite with Claude Code
 

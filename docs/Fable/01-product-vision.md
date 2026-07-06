@@ -30,7 +30,28 @@ There is **no public AACR census** of active PPL/LAPL holders or of the Romanian
 
 ## 3. Who we serve
 
-Five personas anchor every requirement in `04-prd.md`:
+Five personas anchor every requirement in `04-prd.md`. How they map to tiers and surfaces:
+
+```mermaid
+flowchart LR
+    subgraph Personas
+        P1["P1 Andrei<br/>student pilot"]
+        P2["P2 Ioana<br/>PPL renter"]
+        P3["P3 Mihai<br/>enthusiast"]
+        P4["P4 Cristina<br/>partner desk"]
+        P5["P5 Vlad<br/>administrator"]
+    end
+    P1 --> T1["Cadet → Pilot"]
+    P2 --> T2["Pilot"]
+    P3 --> T3["Cadet"]
+    T1 --> MP["Member portal<br/>+ digital card"]
+    T2 --> MP
+    T3 --> MP
+    MP -- "QR scan" --> VF["verify/{token}<br/>public, no account"]
+    P4 --> VF
+    P5 --> CRM["Admin CRM"]
+    CRM -. "contracts back<br/>every benefit" .-> MP
+```
 
 ### P1 — Andrei, the student pilot (28, Bucharest)
 Mid-way through a €9,000 PPL(A) at a DTO flying Tecnam P2008s from Clinceni (`LRCN`). Burning savings; every hour matters.
