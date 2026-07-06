@@ -2,6 +2,8 @@
 
 Fable is the third, self-contained specification suite for the **Aeroskill Club** web platform — a Romanian general-aviation club with a public website, a member portal, and an admin CRM — written to be built end-to-end by a **single developer working with Claude Code**. It shares no content with the earlier `Claude/` and `Codex/` suites; every decision was made fresh and locked in `00-foundation.md`.
 
+The suite is **research-grounded** (verified July 2026): Romanian PPL and rental prices, the Aeroclubul României and AOPA Romania landscape, OG 26/2000 dues/category law, e-Factura deadlines, Law 36/2023 retention, EAA/WCAG 2.2 status, Stripe/Netopia fees, real GA aerodromes (LRCN, LRPV, LRSP, LRTZ), and current stack versions. Facts marked "researched" carry sources; the full evidence table is `00-foundation.md` §10, and each affected document lists its own sources at the end.
+
 ## Reading order
 
 | # | Document | One-liner |
@@ -25,7 +27,7 @@ Fable is the third, self-contained specification suite for the **Aeroskill Club*
 - **Club:** Aeroskill Club, Romanian non-profit association (*asociație*), general-aviation focus, Romanian-first with English (`ro` default, `/en` prefix).
 - **Tiers:** **Cadet — 3000 RON/year · Pilot — 4500 RON/year · Captain (Căpitan) — 6000 RON/year**, anniversary-based membership with a 30-day grace period.
 - **Surfaces:** public website · member portal (profile, subscription, payment, digital member card with QR verification) · admin CRM (members, flight schools, associations, aerodromes, sponsors, benefits, contracts, communication, fleet).
-- **Stack:** Next.js 15 + Supabase (Postgres/RLS, Auth, Storage) + Tailwind/shadcn + next-intl + Stripe (with bank-transfer fallback) + Resend + Vercel + Plausible.
+- **Stack:** Next.js 16 (LTS) + Supabase (Postgres/RLS, Auth, Storage) + Tailwind/shadcn + next-intl + Stripe (with bank-transfer fallback; Netopia plan B) + Resend + Vercel + Plausible.
 - **Roles:** visitor · `member` · `staff` · `admin`.
 
 ## Using this suite with Claude Code

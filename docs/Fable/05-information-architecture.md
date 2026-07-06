@@ -20,6 +20,7 @@ PUBLIC (visitor)
 ├── /legal/privacy             Privacy policy
 ├── /legal/terms               Terms of membership
 ├── /legal/cookies             Cookie notice
+├── /legal/accessibility       Accessibility statement (WCAG 2.2 AA target)
 └── /verify/{token}            Member-card verification (partner-facing)
 
 AUTH (visitor)
@@ -77,6 +78,7 @@ Access levels: **V** visitor (public) · **M** member · **S** staff · **A** ad
 | `/contact` | Contact | V | PUB-008 |
 | `/join` | Join entry | V | PUB-009 |
 | `/legal/privacy` · `/legal/terms` · `/legal/cookies` | Legal | V | PUB-010 |
+| `/legal/accessibility` | Accessibility statement | V | PUB-015 |
 | `/verify/{token}` | Card verification | V | PUB-013 |
 | `/login` | Login | V | MEM-003 |
 | `/register` | Registration | V | MEM-001 |
@@ -173,7 +175,7 @@ Matrix of role × area (roles locked in 00 §5). ✔ = full per PRD; **R** = rea
 
 \* Staff/admin are not members in v1; `/portal/*` redirects them to `/admin`. † Staff have no audit access; audit is admin-only (00 §5).
 
-Enforcement is dual-layer (PLT-002): Next.js middleware + server-action guards for routing, Supabase RLS as the data backstop (06 §RLS).
+Enforcement is dual-layer (PLT-002): the Next.js network boundary (`proxy.ts` in Next 16 — the renamed middleware) + server-action guards for routing, Supabase RLS as the data backstop (06 §RLS).
 
 ## 6. Redirects & error handling
 
@@ -192,3 +194,4 @@ Enforcement is dual-layer (PLT-002): Next.js middleware + server-action guards f
 - Title pattern: `{Page} — Aeroskill Club`; home: `Aeroskill Club — {mission one-liner}`.
 - `hreflang` pairs `ro` ↔ `en` on all public routes (PUB-011); canonical = self per locale.
 - OG image: branded card-motif default; `sitemap.xml` lists public routes only; `/portal`, `/admin`, `/verify` are `noindex` (PUB-012).
+- Structured data (JSON-LD): `Organization` (with `nonprofitStatus`) on `/`; `Offer` markup for the three tiers on `/membership` (price in RON, `priceValidUntil` tied to the 60-day-notice policy of 02 §7); `FAQPage` only if a real FAQ section ships. No review/rating markup — nothing to back it.

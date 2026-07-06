@@ -121,7 +121,8 @@ Constraints: `EXCLUDE USING gist (member_id WITH =, daterange(starts_on, ends_on
 | purpose | payment_purpose | no | `new` / `renewal` / `upgrade` |
 | status | payment_status | no | `'pending'` |
 | stripe_session_id | text | yes | UNIQUE; card payments only |
-| bank_reference | text | yes | manual confirmations (ADM-006) |
+| reference_code | text | yes | UNIQUE, `ASC-P-NNNNN` (00 §4.3); generated for bank transfers — payment-scoped because member numbers don't exist before first activation |
+| bank_reference | text | yes | statement line recorded at manual confirmation (ADM-006) |
 | paid_at | timestamptz | yes | |
 | confirmed_by | uuid | yes | FK → profiles; staff for bank transfers, null for webhook |
 
@@ -339,13 +340,19 @@ erDiagram
 
 ## 5. RLS posture
 
-RLS is **enabled on every table, deny-by-default** (00 §8.2). Role checks use a `security definer` helper reading `profiles.role` for `auth.uid()`:
+RLS is **enabled on every table, deny-by-default** (00 §8.2). The role-check mechanism follows Supabase's researched RBAC guidance (custom claims via auth hook — see sources at §7):
+
+1. **Role lives in the JWT, not in a per-row subquery.** A **Custom Access Token Auth Hook** copies `profiles.role` into a `user_role` claim when a token is issued. Policies read the claim — no `profiles` lookup per row:
 
 ```sql
-CREATE FUNCTION public.current_role() RETURNS role
-LANGUAGE sql SECURITY DEFINER STABLE
-AS $$ SELECT role FROM public.profiles WHERE id = auth.uid() $$;
+CREATE FUNCTION public.jwt_role() RETURNS role
+LANGUAGE sql STABLE
+AS $$ SELECT COALESCE((auth.jwt() ->> 'user_role'), 'member')::role $$;
 ```
+
+2. **Never trust `user_metadata` in policies** — it is end-user-writable. Only the hook-issued claim (or `app_metadata`) is authoritative.
+3. **Role changes propagate on token refresh** (~1 h max staleness). Consequence: demoting or deactivating a staff account (ADM-032) must also revoke the user's sessions server-side, not just flip `profiles.role`.
+4. **Performance rules** (researched): wrap volatile calls so Postgres caches them per statement instead of per row — `(SELECT auth.uid())`, `(SELECT public.jwt_role())`; scope every policy `TO authenticated` (or `TO anon` where truly public) so the other role skips evaluation entirely; and **index every column referenced by a policy** — `members.profile_id`, `payments.member_id`, `memberships.member_id`, `benefits.contract_id`, `contracts.sponsor_id` etc. (`auth.uid() = column` checks are >100× faster indexed).
 
 | Table | anon | member (own) | staff | admin |
 |-------|------|--------------|-------|-------|
@@ -369,32 +376,38 @@ AS $$ SELECT role FROM public.profiles WHERE id = auth.uid() $$;
 ### Instructive policies
 
 ```sql
--- members: self-read
+-- members: self-read (auth.uid() wrapped in SELECT → cached initPlan, not per-row)
 CREATE POLICY members_self_select ON members FOR SELECT
-  USING (profile_id = auth.uid());
+  TO authenticated
+  USING (profile_id = (SELECT auth.uid()));
 
--- payments: member sees own payments only
+-- payments: member sees own payments only (payments.member_id is indexed)
 CREATE POLICY payments_self_select ON payments FOR SELECT
-  USING (member_id IN (SELECT id FROM members WHERE profile_id = auth.uid()));
+  TO authenticated
+  USING (member_id IN (SELECT id FROM members WHERE profile_id = (SELECT auth.uid())));
 
--- staff/admin: full read on members
+-- staff/admin: full access on members (role from JWT claim, no table lookup)
 CREATE POLICY members_staff_all ON members FOR ALL
-  USING (public.current_role() IN ('staff','admin'));
+  TO authenticated
+  USING ((SELECT public.jwt_role()) IN ('staff','admin'));
 
 -- benefits: public read only when publishable
 CREATE POLICY benefits_public_select ON benefits FOR SELECT
+  TO anon, authenticated
   USING (active AND (contract_id IS NULL OR EXISTS (
     SELECT 1 FROM contracts c WHERE c.id = contract_id AND c.status = 'active')));
 
 -- sponsors: public read gated by active sponsorship contract
 CREATE POLICY sponsors_public_select ON sponsors FOR SELECT
+  TO anon, authenticated
   USING (visible_on_site AND EXISTS (
     SELECT 1 FROM contracts c WHERE c.sponsor_id = sponsors.id
       AND c.type = 'sponsorship' AND c.status = 'active'));
 
 -- audit_logs: admin read, no one updates/deletes
 CREATE POLICY audit_admin_select ON audit_logs FOR SELECT
-  USING (public.current_role() = 'admin');
+  TO authenticated
+  USING ((SELECT public.jwt_role()) = 'admin');
 ```
 
 **Card verification** (PUB-013) never exposes tables to anon; it calls a `security definer` RPC returning the minimal verdict payload:
@@ -429,4 +442,12 @@ Ordered migration list (one concern per migration, 03 §philosophy):
 | 011 | audit | `audit_logs`, `updated_at` triggers, audit helpers |
 | 012 | RLS | enable RLS everywhere + all §5 policies |
 
-**Seeds:** the three `tiers` rows exactly per 00 §3.1; `club_settings` placeholder row; `email_templates` for every PLT-004 key — `application_received`, `application_rejected`, `bank_transfer_instructions`, `payment_confirmed`, `membership_activated`, `renewal_minus_30`, `renewal_minus_7`, `renewal_day_0`, `renewal_grace_14`, `lapse_final_30`, `upgrade_confirmed`, `erasure_received`, `erasure_completed`, `staff_invite`, `alert_contract_expiry`, `alert_aircraft_docs`, `alert_pending_transfer`; one bootstrap `admin` profile (created via Supabase invite, promoted by seed). Local/dev additionally seeds demo partners, contracts, benefits, and members for development (never in production).
+**Auth hook migration note:** the Custom Access Token hook (§5.1) ships with migration 002 alongside `profiles`; it is configured in Supabase Auth settings per environment and must be part of the environment checklist (09 §5).
+
+**Seeds:** the three `tiers` rows exactly per 00 §3.1; `club_settings` placeholder row; `email_templates` for every PLT-004 key — `application_received`, `application_rejected`, `bank_transfer_instructions`, `payment_confirmed`, `membership_activated`, `renewal_minus_30`, `renewal_minus_7`, `renewal_day_0`, `renewal_grace_14`, `lapse_final_30`, `upgrade_confirmed`, `erasure_received`, `erasure_completed`, `staff_invite`, `alert_contract_expiry`, `alert_aircraft_docs`, `alert_pending_transfer`; one bootstrap `admin` profile (created via Supabase invite, promoted by seed). Local/dev additionally seeds demo partners, contracts, benefits, and members for development (never in production) — using **real Romanian GA aerodromes** so demo data reads true: Clinceni `LRCN`, Ploiești-Strejnic `LRPV`, Brașov-Sânpetru `LRSP`, Tuzla `LRTZ`, București-Băneasa `LRBS`.
+
+---
+
+## 7. Sources
+
+*RLS mechanics per Supabase's published guidance: [RLS performance & best practices](https://supabase.com/docs/guides/troubleshooting/rls-performance-and-best-practices-Z5Jjwv), [Custom claims & RBAC](https://supabase.com/docs/guides/database/postgres/custom-claims-and-role-based-access-control-rbac), [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security). Aerodrome codes: AACR aerodrome register and flight-planning databases (00 §10).*

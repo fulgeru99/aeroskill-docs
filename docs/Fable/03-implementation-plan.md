@@ -24,8 +24,8 @@ Effort unit: one Claude Code working session ≈ a focused half-day.
 
 | Slice | Goal | PRD IDs | Tables (06) | Routes (05) | Sessions |
 |-------|------|---------|-------------|-------------|----------|
-| **S0 — Walking skeleton** | Repo, Next.js 15 + TS strict, Tailwind/shadcn with 08 tokens, next-intl scaffold (ro/en), Supabase project + local stack, CI (lint/type/test/migration-drift), Vercel deploy, error pages | PLT-003 (partial), PUB-014 | migrations 001–002 (`profiles`, `club_settings`) | layout shells, `/`(placeholder) | 3–4 |
-| **S1 — Public website** | All static-content public pages, bilingual, SEO, contact form | PUB-001 (static teaser), PUB-002, PUB-003 (seeded tiers), PUB-008, PUB-009 (entry only), PUB-010, PUB-011, PUB-012, PUB-014 | `tiers` seed (mig 003 partial) | `/`, `/mission`, `/membership`, `/contact`, `/join`, `/legal/*` | 4–6 |
+| **S0 — Walking skeleton** | Repo, Next.js 16 + TS strict (Turbopack, `proxy.ts` route gating), Tailwind/shadcn with 08 tokens, next-intl scaffold (ro/en), Supabase project + local stack + auth hook (06 §5), CI (lint/type/test/migration-drift), Vercel deploy, error pages | PLT-003 (partial), PUB-014 | migrations 001–002 (`profiles`, `club_settings`) | layout shells, `/`(placeholder) | 3–4 |
+| **S1 — Public website** | All static-content public pages, bilingual, SEO, contact form | PUB-001 (static teaser), PUB-002, PUB-003 (seeded tiers), PUB-008, PUB-009 (entry only), PUB-010, PUB-011, PUB-012, PUB-014, PUB-015 | `tiers` seed (mig 003 partial) | `/`, `/mission`, `/membership`, `/contact`, `/join`, `/legal/*` | 4–6 |
 | **S2 — Auth & application** | Register/login/reset; application form; portal shell with status states | MEM-001, MEM-002, MEM-003, MEM-004, PLT-001, PLT-002, PLT-008 | `members`, `memberships` (mig 003) + first RLS | `/register`, `/login`, `/reset-password`, `/portal`, `/portal/apply`, `/portal/profile` | 4–6 |
 | **S3 — Payments & activation** | Stripe Checkout + webhook; bank-transfer path; activation engine; lifecycle emails (application/payment/activation set); *minimal* approve action for alpha | MEM-005, MEM-006, MEM-007, PLT-009, PLT-004 (subset), ADM-005 (minimal) | `payments`, `stripe_events`, `member_cards`, `email_log` (mig 004–005) | `/portal/membership/pay`, `/api/webhooks/stripe` | 5–7 |
 | **S4 — Portal & card** | Dashboard, membership view, renewal & upgrade actions, payment history, the card, public verification | MEM-008–MEM-016, PUB-013 | `verify_card()` RPC (mig 005) | `/portal/*` (membership, renew, upgrade, payments, card), `/verify/{token}` | 4–6 |
@@ -74,8 +74,17 @@ Never cut: payments correctness (PLT-009), activation/status engine (PLT-006), c
 
 | Risk | Mitigation |
 |------|------------|
-| Stripe onboarding for the *asociație* stalls (02 R2) | Start Stripe activation paperwork during S0; S3 builds bank-transfer path first so alpha can run on transfers alone |
+| Stripe onboarding for the *asociație* stalls (02 R2) | Start Stripe activation paperwork during S0; S3 builds bank-transfer path first so alpha can run on transfers alone; Netopia plan B documented with real fees (00 §4.3) |
 | Logo/final brand arrives late (08 §1) | Placeholder palette is complete; swap is a token-file change |
-| Legal-page content (PUB-010) needs a lawyer | Commission during S1; ship with reviewed drafts no later than M2 |
+| Legal-page content (PUB-010/015) needs a lawyer | Commission during S1; ship with reviewed drafts no later than M2 |
 | Approval flow blocks alpha activations (ADM-005 full CRM lands in S5) | S3 ships the minimal approve action explicitly for this |
 | Cron/dunning correctness is date-sensitive | Unit-test the transition engine exhaustively (§1.6); staging cohort with compressed clock before M3 |
+| Statute doesn't yet define the three member categories (02 R12) | Legal prerequisite, not code: confirm the statute (or its amendment) before taking the first real payment in alpha |
+
+## 7. Assumptions to validate during the build
+
+Research (00 §10) grounded most numbers, but three assumptions remain open and each has a validation hook:
+
+1. **Market depth** — no public AACR census of PPL/LAPL holders exists (01 §2). *Validate:* AACR aggregate-data request + enrollment counts from the first two partner schools, by end of M1.
+2. **Benefit recoup targets** — the ≤50%-of-usage break-even rule (02 §3) assumes schools will contract ~10% on training packages. *Validate:* the first two partnership negotiations; if packages come in at 5%, tier promises and the public math must be re-anchored before M2's public benefit rows go live.
+3. **Bank-transfer share** — reconciliation load (FLOW-10) scales with the share of members choosing transfers over cards. *Validate:* alpha cohort payment-method split; if transfers dominate, prioritize the reference-code matching UX and consider earlier Netopia evaluation for lower card friction.

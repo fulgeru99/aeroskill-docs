@@ -24,9 +24,9 @@ Total 42–59 sessions. Strictly sequential (03 §2); no phase starts before the
 
 ### P0 — Walking skeleton
 **Objective:** production-deployed empty app with the entire toolchain proven. **Entry:** repos + accounts exist (see §3).
-1. Next.js 15 + TypeScript strict + Tailwind/shadcn with 08 tokens; layout shells for the three route groups (05 §1).
+1. Next.js 16 + TypeScript strict (Turbopack, `proxy.ts` route gating) + Tailwind/shadcn with 08 tokens; layout shells for the three route groups (05 §1).
 2. next-intl ro/en scaffold (PLT-003); branded 404/403 (PUB-014).
-3. Supabase project + local stack; migrations 001–002 (`profiles`, `club_settings`); CI: lint, types, unit, migration drift; Vercel deploy + preview pipeline (09 §8).
+3. Supabase project + local stack + custom access token auth hook (06 §5); migrations 001–002 (`profiles`, `club_settings`); CI: lint, types, unit, migration drift; Vercel deploy + preview pipeline (09 §8).
 
 **Demo checkpoint:** visiting the production URL shows the bilingual shell; a PR shows preview deploy + green CI. **Not in this phase:** any real page content.
 
@@ -34,7 +34,7 @@ Total 42–59 sessions. Strictly sequential (03 §2); no phase starts before the
 **Objective:** the club exists publicly, bilingual, fast. **Entry:** P0 checkpoint.
 1. `/` home with mission hero + static tier teaser (PUB-001), `/mission` (PUB-002).
 2. `/membership` tier comparison from seeded `tiers` (PUB-003); `/join` entry (PUB-009).
-3. `/contact` + form with rate-limited submission (PUB-008), `/legal/*` (PUB-010).
+3. `/contact` + form with rate-limited submission (PUB-008), `/legal/*` incl. accessibility statement (PUB-010, PUB-015).
 4. Locale switcher + hreflang (PUB-011), SEO meta/sitemap (PUB-012).
 
 **Demo checkpoint:** Lighthouse mobile LCP < 2.5 s on `/`; both locales fully navigable. **Not yet:** live sponsors (P6), live benefit rows (P6), fleet page (P8), founding counter (P6).
@@ -103,12 +103,14 @@ Total 42–59 sessions. Strictly sequential (03 §2); no phase starts before the
 
 | Dependency | Needed by | Owner action |
 |------------|-----------|--------------|
-| Stripe account activated for the *asociație* | P3 | Start paperwork during P0 (03 §6); bank-transfer rail is the hedge |
+| Stripe account activated for the *asociație* | P3 | Start paperwork during P0 (03 §6); bank-transfer rail is the hedge; Netopia documented plan B (00 §4.3) |
+| Club statute defines Cadet/Pilot/Captain as member categories with AG-set dues (OG 26/2000, 02 R12) | First real payment (M1) | Draft/amend statute with the lawyer alongside P1 legal pages |
+| Accountant's e-Factura SPV workflow for sponsorship invoices (mandatory for NGOs since 2025-07-01, 00 §2) | First sponsor contract (P6/M2) | Confirm process with the accountant during P5 |
 | Final logo files | P1 polish (placeholder OK until then) | Commission early; palette swap is token-only (08 §1) |
-| Legal pages content (privacy/terms/cookies) | P1 draft, reviewed by M2 | Lawyer review in parallel with P1–P5 |
+| Legal pages content (privacy/terms/cookies/accessibility) | P1 draft, reviewed by M2 | Lawyer review in parallel with P1–P5 |
 | Domain + DNS (`aeroskill.club` assumed, 09 §4) | P0 | Confirm and configure at P0 |
 | Club IBAN + entity data for `club_settings` | P3 | Available at association registration |
-| ≥ 5 flight schools, ≥ 4 aerodromes, ≥ 2 sponsors signed | M3 gate (02 R1) | Administrator pipeline runs in parallel from M1 |
+| ≥ 5 flight schools, ≥ 4 aerodromes, ≥ 2 sponsors signed | M3 gate (02 R1) | Administrator pipeline runs in parallel from M1; lead with training-package discounts (02 §3 contracting rule) |
 | Seed members willing to pay real dues | M1 | Recruit before P4 completes |
 
 ## 4. Launch-readiness checklist (M3 gate)
@@ -119,8 +121,8 @@ Total 42–59 sessions. Strictly sequential (03 §2); no phase starts before the
 - [ ] Dunning engine proven on compressed-clock cohort (P7 checkpoint)
 - [ ] GDPR: export + erasure executed for real; privacy policy lists 09 §3 processors; DPAs on file
 - [ ] Restore drill completed and timed (09 §6); the five alerts (09 §9) firing and routed
-- [ ] WCAG AA pass on public + portal; LCP budget met on 4G mobile
-- [ ] Legal pages lawyer-approved; cookie notice accurate (no banner needed — 00 §4.5)
+- [ ] WCAG **2.2** AA pass on public + portal (incl. the five new criteria, 08 §7); accessibility statement live at `/legal/accessibility` (PUB-015); LCP budget met on 4G mobile
+- [ ] Legal pages lawyer-approved; cookie notice accurate (no banner needed — 00 §4.5); statute categories confirmed (02 R12); accountant e-Factura workflow confirmed (02 R11)
 - [ ] Founding-member counter correct against the database; price lock recorded via `memberships.price_ron`
 - [ ] Runbook (09 §6) rehearsed: key revocation, DB restore, Stripe pause
 

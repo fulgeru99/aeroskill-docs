@@ -79,6 +79,11 @@ The partner-facing live card check (02 R5, 08 §6.5).
 **PUB-014 — Error pages** (M)
 - AC1: Branded 404 and 403 pages in both locales with a path back home; portal 403 explains login/role requirement.
 
+**PUB-015 — Accessibility statement** (S)
+Voluntary EAA-aligned statement (00 §8.3: the club is likely microenterprise-exempt but targets WCAG 2.2 AA anyway).
+- AC1: `/legal/accessibility` states the WCAG 2.2 AA conformance target, known limitations, and a feedback contact, in both locales.
+- AC2: Linked from the footer's consistent-help position (08 §7, criterion 3.2.6).
+
 ---
 
 ## 2. Member portal (MEM)
@@ -107,13 +112,13 @@ The partner-facing live card check (02 R5, 08 §6.5).
 ### 2.2 Payment & activation
 
 **MEM-005 — Card payment via Stripe Checkout** (M)
-- AC1: From an unpaid `pending` membership, "Pay by card" creates a Stripe Checkout session for the exact tier price in RON.
-- AC2: Payment confirmation happens **only** via the signature-verified webhook (PLT-009), which sets the payment `confirmed` and triggers activation (MEM-007).
+- AC1: From an unpaid `pending` membership, "Pay by card" creates a Stripe Checkout session for the exact tier price in RON; PSD2/SCA (3-D Secure) challenges are handled inside Checkout (00 §4.3).
+- AC2: Payment confirmation happens **only** via the signature-verified webhook (PLT-009), which sets the payment `confirmed` and triggers activation (MEM-007) — never via the success redirect alone.
 - AC3: Cancel/failure returns the member to a retry screen with bank-transfer alternative offered; payment recorded as `failed` where a session concluded unsuccessfully.
 
 **MEM-006 — Bank-transfer payment instructions** (M)
-- AC1: "Pay by bank transfer" shows club IBAN and beneficiary (from `club_settings`) and payment reference = member number (00 §4.3), plus the exact amount.
-- AC2: Creates a `payments` row (`bank_transfer`, `pending`) visible in the admin queue (ADM-002); member sees "awaiting confirmation" status.
+- AC1: "Pay by bank transfer" shows club IBAN and beneficiary (from `club_settings`), the exact amount, and the unique payment reference code `ASC-P-NNNNN` (00 §4.3) — payment-scoped because member numbers don't exist before first activation.
+- AC2: Creates a `payments` row (`bank_transfer`, `pending`, with `reference_code`) visible in the admin queue (ADM-002); member sees "awaiting confirmation" status.
 
 **MEM-007 — Activation** (M)
 - AC1: A membership becomes `active` only when its payment is `confirmed` **and** the application is approved (ADM-005); whichever completes last triggers activation.
@@ -219,7 +224,7 @@ Admin CRM is Romanian-only (00 §4.4). Every mutating action here is audit-logge
 - AC2: Rejection records a reason and emails the applicant; a rejected applicant's data is purged after 90 days (09 §retention).
 
 **ADM-006 — Manual payment confirmation** (M)
-- AC1: Staff can confirm a `pending` bank-transfer payment (recording paid date and bank reference), which triggers activation/renewal exactly as a Stripe confirmation would.
+- AC1: Staff can confirm a `pending` bank-transfer payment by matching the statement line's reference code (`ASC-P-NNNNN`) and amount, recording paid date and bank reference — which triggers activation/renewal exactly as a Stripe confirmation would.
 - AC2: Staff can also register an unannounced received transfer against a member and membership.
 - AC3: Confirmation is irreversible in UI except by `admin` refund action (payment → `refunded`), both audit-logged.
 
@@ -340,7 +345,7 @@ Admin CRM is Romanian-only (00 §4.4). Every mutating action here is audit-logge
 - AC1: Supabase Auth (email + password, confirmation, reset) is the only authentication path; sessions are HTTP-only secure cookies.
 
 **PLT-002 — Authorization (RBAC + RLS)** (M)
-- AC1: Route-level guards per the 05 §5 access map (visitor/member/staff/admin) in Next.js middleware and server actions.
+- AC1: Route-level guards per the 05 §5 access map (visitor/member/staff/admin) in the Next.js network boundary (`proxy.ts`, Next 16) and in every server action.
 - AC2: Every table has RLS enabled with deny-by-default policies per 06 §RLS; direct API access cannot exceed role rights even if UI guards fail.
 
 **PLT-003 — i18n mechanics** (M)
@@ -389,9 +394,9 @@ Admin CRM is Romanian-only (00 §4.4). Every mutating action here is audit-logge
 | Availability | Single-region managed stack (09); target 99.5% monthly; verification page is the availability-critical path |
 | Backup | Daily automated Postgres backups, 30-day retention, restore drill before public launch (09) |
 | Security | 00 §8 baseline: HTTPS-only, RLS-everywhere, signed webhooks, secrets in env, rate limits (PLT-011) |
-| Accessibility | WCAG 2.1 AA on public + portal (08 §7) |
+| Accessibility | WCAG 2.2 AA on public + portal (08 §7; EAA context in 00 §8.3) |
 | Data volumes | Designed for ≤ 5,000 members, ≤ 200 partners/contracts, ≤ 50 aircraft — no premature scaling work |
 
 ## 6. Out of scope
 
-The v1 exclusion list is locked in 00 §9 and repeated here by reference — notably: no native apps, no flight booking/scheduling, no events ticketing, no benefit-redemption tracking, no auto-recurring payments, no fiscal e-invoicing integration, no sponsor self-service. Anything not covered by an ID in this document is out of scope for v1.
+The v1 exclusion list is locked in 00 §9 and repeated here by reference — notably: no native apps, no flight booking/scheduling, no events ticketing, no benefit-redemption tracking, no auto-recurring payments, no sponsor self-service, and no fiscal e-invoicing integration (sponsorship invoices are B2B and legally must flow through ANAF e-Factura — issued by the club's accountant via SPV, entirely outside the platform; 00 §2). Anything not covered by an ID in this document is out of scope for v1.

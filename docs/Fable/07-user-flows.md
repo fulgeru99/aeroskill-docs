@@ -40,9 +40,10 @@
 6. `/portal/apply` → fills application (name, phone, county, DOB, pilot status, terms; optional marketing consent) → `members` row (`status='pending'`) + `memberships` row (`tier_id`, `status='pending'`, `price_ron=3000`) created (MEM-002); "application received" email sent (`email_log`).
    - Validation failure → inline Zod errors, nothing persisted.
 7. `/portal/membership/pay` → chooses **card** → Stripe Checkout session created (`payments` row: `card`, `purpose='new'`, `status='pending'`, `stripe_session_id`) → redirect to Stripe (MEM-005).
-   - Chooses **bank transfer** → IBAN + reference (member pending — reference assigned at activation is member number, so pre-activation reference = application email; see FLOW-10 AC) → `payments` row (`bank_transfer`, `pending`) → member sees "awaiting confirmation" (MEM-006). *Flow continues at FLOW-10.*
+   - Chooses **bank transfer** → IBAN + unique reference code `ASC-P-NNNNN` generated on the `payments` row (`bank_transfer`, `pending`, `reference_code`) → member sees "awaiting confirmation" with the code prominently copyable (MEM-006). *Flow continues at FLOW-10.*
    - Cancels Stripe Checkout → returned to `/portal/membership/pay` with retry + bank-transfer alternative.
-8. Stripe → payment succeeds → webhook `/api/webhooks/stripe` verifies signature, records `stripe_events`, sets payment `confirmed` (PLT-009).
+8. Stripe → member completes payment (any PSD2/SCA 3-D Secure challenge happens inside Checkout) → webhook `/api/webhooks/stripe` verifies signature, records `stripe_events`, sets payment `confirmed` (PLT-009).
+   - SCA challenge failed/abandoned → session expires unpaid → step 7 retry path; the success redirect alone never activates anything (MEM-005 AC2).
 9. System → if application already approved (FLOW-09) → **activation** (MEM-007): membership `active`, `starts_on=today`, `ends_on=+1y−1d`; member `active`; `member_number` assigned; `member_cards` row issued; founding flag if among first 50; "membership activated" email with card link.
    - Application not yet approved → member stays `pending` with "payment received, awaiting approval" state; activation fires on approval.
 10. `/portal` → dashboard shows `active` chip, card CTA → member opens `/portal/card` (FLOW-06).
@@ -169,7 +170,8 @@ flowchart LR
 **Actor:** staff. **Trigger:** bank statement shows an incoming transfer; ADM-002 queue lists `pending` bank-transfer payments.
 
 1. `/admin` → "Pending transfers (2)" → payment detail via `/admin/members/{id}`.
-2. Matches statement line by reference (member number, or applicant email pre-activation) and amount → **Confirm payment** → records `paid_at` + `bank_reference`, `confirmed_by` = staff profile (ADM-006).
+2. Matches statement line by the payment's unique reference code `ASC-P-NNNNN` and amount → **Confirm payment** → records `paid_at` + `bank_reference`, `confirmed_by` = staff profile (ADM-006).
+   - Member forgot the code and referenced their name instead → staff searches pending payments by member name/amount; the code is a fast path, not a hard gate.
    - Amount mismatch → staff contacts member; may confirm partial as `pending` note or mark `failed`.
    - Unannounced transfer (no `pending` row) → staff creates the payment against the member's membership directly (ADM-006 AC2).
 3. System → confirmation triggers activation/renewal/upgrade effects identically to the Stripe webhook path (FLOW-01 step 9, FLOW-03 step 4, FLOW-05 step 4).

@@ -63,7 +63,7 @@ Full ramps (50, 100, 200, 300, 400, 500, 600, 700, 800, 900) generated in OKLCH 
 
 ## 3. Typography
 
-All fonts self-hosted via `next/font` (no external font requests — GDPR posture, 09). All chosen families fully cover Romanian diacritics **ă â î ș ț** with correct comma-below forms.
+All fonts self-hosted via `next/font` (no external font requests — GDPR posture, 09). All chosen families fully cover Romanian diacritics **ă â î ș ț** with correct **comma-below** forms (U+0218–U+021B, not the Turkish cedilla forms) — verified: Inter and Manrope both ship complete Latin Extended coverage; this must be re-verified for any future font swap, as ș/ț rendering is the most common Romanian-web typography failure.
 
 | Role | Family | Weights |
 |------|--------|---------|
@@ -148,17 +148,33 @@ Tier benefits summary (from the live benefits catalog), grace-period notice when
 
 Same brand, radically simple, one screen, no login: giant status verdict — ✅ "Membru activ / Active member" (success green) or ❌ "Card invalid / expirat" (danger red) — then member first name + last initial, tier badge, validity date, and "checked at `timestamp`". No other personal data (GDPR minimization). Result is rendered server-side, live from the database.
 
-## 7. Accessibility rules (per 00 §8 — WCAG 2.1 AA)
+## 7. Accessibility rules (per 00 §8 — WCAG 2.2 AA)
+
+Regulatory context (researched, 00 §8.3): the EAA has been enforced since 2025-06-28; its harmonized standard EN 301 549 v3.2.1 embeds WCAG 2.1 AA, with the WCAG 2.2 revision (v4.1.1) expected in 2026. The club is very likely EAA-exempt as a services microenterprise, but we target **WCAG 2.2 AA** and publish an accessibility statement (04 PUB-015) so growth never triggers a retrofit.
 
 1. Text contrast ≥ 4.5:1 (≥ 3:1 for `h2`+); every §2.2 pairing validated, including tier colors on navy (card) and on white (badges) — `signal-500` on white is **large-text/badge only**, body text uses `signal-700`.
 2. Full keyboard operability; visible `focus-visible` ring (2px `sky-500`, 2px offset) on every interactive element.
-3. Touch targets ≥ 44×44px (portal is mobile-first, 00 §8).
+3. Touch targets ≥ 44×44px (portal is mobile-first, 00 §8) — comfortably above WCAG 2.2's new 24×24px minimum.
 4. All form inputs labeled; errors announced via `aria-live`; status chips carry text, never color alone.
 5. `lang` attribute switches with locale; diacritics render correctly in all three families (§3).
 6. Images: meaningful `alt`; sponsor logos alt = sponsor name; decorative motifs `alt=""`.
+
+**The five success criteria new in WCAG 2.2 AA, with their concrete design consequences here:**
+
+| New criterion | Consequence in this system |
+|---------------|----------------------------|
+| 2.4.11 Focus Not Obscured | Sticky headers/admin filter bars must never cover the focused element — scroll-margin on all focusable rows |
+| 2.5.8 Target Size (Minimum, 24px) | Already exceeded by rule 3; applies to inline links in dense admin tables too |
+| 3.2.6 Consistent Help | Contact/help link sits in the same footer position on every public and portal page |
+| 3.3.7 Redundant Entry | The application flow (MEM-002) never re-asks data already given at registration; renewal/upgrade forms prefill everything known |
+| 3.3.8 Accessible Authentication | Email+password with paste allowed and password-manager friendly; no CAPTCHAs or cognitive puzzles on `/login` (rate limiting per PLT-011 does the anti-abuse work instead) |
 
 ## 8. Imagery & tone
 
 - **Photography:** real Romanian GA — aircraft on grass strips, cockpit shots, golden-hour aprons. No stock airliner imagery, ever.
 - **Iconography:** Lucide (ships with shadcn/ui), 1.5px stroke, `slate-600` default.
-- **Voice:** confident, warm, plain — "Zbori mai mult. Plătești mai puțin. Aparții." (01 §1). Romanian copy is the master; English translates the Romanian, not vice versa. No aviation gatekeeping jargon on public pages; ICAO codes and registrations are welcome in fleet/admin contexts.
+- **Voice:** confident, warm, plain — "Zbori mai mult. Plătești mai puțin. Aparții." (01 §1). Romanian copy is the master; English translates the Romanian, not vice versa. No aviation gatekeeping jargon on public pages; ICAO codes and registrations are welcome in fleet/admin contexts (real reference points: Clinceni `LRCN`, Ploiești-Strejnic `LRPV`, Brașov-Sânpetru `LRSP`, Tuzla `LRTZ`).
+
+---
+
+*Sources for the researched claims in this document: [EAA e-commerce requirements](https://accessible.org/eaa-ecommerce-services-requirements/), [EN 301 549 / WCAG mapping](https://www.levelaccess.com/blog/is-wcag-conformance-enough-for-eaa-compliance/), [EN 301 549 v4.1.1 / WCAG 2.2 timeline](https://digital-strategy.ec.europa.eu/en/policies/latest-changes-accessibility-standard). Full research basis: 00 §10.*

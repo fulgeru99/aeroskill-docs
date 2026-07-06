@@ -34,8 +34,16 @@ Fable is the third, self-contained specification set for the Aeroskill Club plat
 | Legal form | Romanian non-profit association (*asociație*), governed by OG 26/2000. Membership fees are annual association dues (*cotizație anuală*) |
 | Focus | **General aviation**: student pilots, PPL/LAPL holders, and aviation enthusiasts. Not airline/commercial aviation |
 | Market | Romania. Romanian-first product; English as secondary locale |
-| Jurisdiction | EU — GDPR applies in full |
-| Fiscal note | Formal fiscal invoicing (e-Factura/SmartBill) is handled outside the platform in v1; the platform issues payment confirmations, not fiscal invoices |
+| Jurisdiction | EU — GDPR applies in full; supervisory authority is **ANSPDCP** |
+| Fiscal note | Formal fiscal invoicing is handled outside the platform in v1; the platform issues payment confirmations, not fiscal invoices. See the e-Factura boundary below |
+
+**OG 26/2000 constraints the product must respect (researched):**
+
+- Dues (*cotizații*) are set by the **general assembly** (*adunarea generală*) and must be **equal for all members within a category**. The three tiers therefore exist legally as **statutory member categories** — the club statute must define Cadet/Pilot/Captain as categories, and any price change requires a general-assembly decision (which is why 02 §7 mandates 60 days' notice).
+- The association must maintain a **member register**; the platform's `members` table is its operational form, so member data quality is a legal duty, not just hygiene.
+- Statutory voting rights are governed by the statute, not by tier — a Captain membership buys benefits, never extra votes (01 §4).
+
+**e-Factura boundary (researched, locked):** Romania's RO e-Factura became mandatory B2C on 2025-01-01 and for NGOs conducting economic activity on 2025-07-01. Membership *cotizații* from individuals are association dues, not invoiceable supplies, and stay **outside** e-Factura. **Sponsorship and service invoices to companies are B2B invoices and must go through ANAF SPV/e-Factura** — issued by the club's accountant outside the platform. The platform records contract values and payment confirmations only; it never issues fiscal invoices (00 §9 item 8).
 
 ---
 
@@ -51,7 +59,9 @@ Three tiers, annual dues, prices **locked**:
 | **Pilot** | Pilot | Pilot | **4500 RON** | Fly more for less: enhanced discounts, fleet preferential rates, priority event access, 2 guest passes/year |
 | **Captain** | Căpitan | Captain | **6000 RON** | The full club experience: top discounts, first access to fleet, all events included, 4 guest passes/year, concierge support |
 
-Tier names are ranked: Cadet (rank 1) < Pilot (rank 2) < Captain (rank 3). A benefit with a *minimum tier* is available to that tier and every tier above it.
+Tier names are ranked: Cadet (rank 1) < Pilot (rank 2) < Captain (rank 3). A benefit with a *minimum tier* is available to that tier and every tier above it. The three tiers are mirrored as member categories in the club statute (§2) so that per-tier dues are lawful under OG 26/2000.
+
+**Price context (researched):** 3000 RON ≈ €600 ≈ roughly four wet rental hours at Romanian schools (€120–145/h) and ~7% of a PPL(A) course (€8,000–10,000 at Romanian ATOs/DTOs). This is deliberately **6–10× typical advocacy-association dues** (AOPA US charges $59–179/year): Aeroskill is a *buying club* whose dues must be recouped through contracted benefits, not a representation body — the benefit-economics rules in 02 §3 make that promise enforceable.
 
 *Rejected alternatives:* "Solo / Cross-Country / Commander" (poor Romanian rendering), "Bronze / Silver / Gold" (reserved for sponsor packages, §3.4).
 
@@ -101,7 +111,7 @@ All three surfaces live in **one Next.js application** (route groups), one deplo
 
 | Layer | Choice | Why (solo + Claude Code) |
 |-------|--------|--------------------------|
-| Framework | **Next.js 15** (App Router, TypeScript, Server Actions) | One framework for all three surfaces; first-class Vercel deploys |
+| Framework | **Next.js 16** (App Router, TypeScript, Server Actions; LTS since 2025-10, Turbopack default, route gating via `proxy.ts`) | One framework for all three surfaces; first-class Vercel deploys |
 | Database | **Supabase Postgres** with **Row Level Security** | Managed Postgres + auth + storage in one service; RLS as the authorization backstop |
 | Auth | **Supabase Auth** — email + password, email confirmation, password reset | No extra service; integrates with RLS via JWT claims |
 | Styling | **Tailwind CSS 4 + shadcn/ui** | Token-driven, component library Claude Code works well with |
@@ -117,8 +127,10 @@ All three surfaces live in **one Next.js application** (route groups), one deplo
 
 ### 4.3 Payment mechanics (locked)
 
-- **Card**: Stripe Checkout session per membership purchase/renewal/upgrade; confirmation via Stripe **webhook**, never via redirect alone.
-- **Bank transfer**: portal shows the club IBAN and a **payment reference = member number** (e.g. `ASC-2026-0001`); staff confirm the transfer in the CRM, which activates the membership.
+- **Card**: Stripe Checkout session per membership purchase/renewal/upgrade; confirmation via Stripe **webhook**, never via redirect alone. Checkout handles PSD2/SCA (3-D Secure) automatically for EEA cards.
+- **Card fees (researched, for planning):** Stripe EEA standard cards ≈ **1.5% + 1 RON** per transaction; disputes 100 RON. On a 3000 RON Cadet payment that is ~46 RON (~1.5%) — immaterial to tier economics (02 §5).
+- **Bank transfer**: portal shows the club IBAN and a unique **payment reference code** `ASC-P-NNNNN` generated per payment (member numbers don't exist before first activation, so the reference must be payment-scoped); staff match the statement line by code and confirm in the CRM, which activates the membership.
+- **Plan B (researched):** Netopia Payments — Romania's largest local processor (~60% of online card volume, NGO-friendly) at **0.99% + 0.30 RON** for standard cards. Cheaper than Stripe but a heavier integration for a solo developer; switch only if Stripe onboarding for the *asociație* fails (02 R2).
 - All amounts stored in **whole RON** (integer); no cents, no other currencies in v1.
 
 ### 4.4 i18n (locked)
@@ -176,6 +188,7 @@ Locked entity names. Database tables are **snake_case, plural**.
 
 **Identifier formats (locked):**
 - Member number: `ASC-YYYY-NNNN` (year of joining + 4-digit sequence), e.g. `ASC-2026-0001`. Permanent — never reissued.
+- Payment reference code (bank transfers): `ASC-P-NNNNN`, unique per payment (§4.3).
 - Card verification token: 22-character URL-safe random token; verification URL `/verify/{token}`.
 - Contract number: `CTR-YYYY-NNN`.
 
@@ -236,7 +249,7 @@ Docs reference each other by number ("see 06 §4") and requirements by ID ("cove
 
 1. **GDPR**: lawful bases documented (09 §GDPR); member self-service data export and erasure request (04 `MEM-`/`PLT-` requirements); marketing consent is opt-in and separate from transactional email; processor list maintained in 09.
 2. **Security baseline**: HTTPS only; Supabase RLS enabled on every table (deny-by-default); secrets only in environment variables; webhooks signature-verified; admin actions audit-logged.
-3. **Accessibility**: WCAG 2.1 AA on public site and portal (contrast, keyboard, focus states, form labels).
+3. **Accessibility**: **WCAG 2.2 AA** on public site and portal. Researched context: the European Accessibility Act is enforced since 2025-06-28 and covers e-commerce services; its current harmonized standard (EN 301 549 v3.2.1) bakes in WCAG 2.1 AA, with the WCAG 2.2 update (v4.1.1) expected in 2026. The club almost certainly qualifies for the EAA **microenterprise services exemption** (<10 employees *and* <€2M turnover — both required), but we build to WCAG 2.2 AA anyway and publish an accessibility statement (04 PUB-015): the exemption vanishes the moment the thresholds are crossed, with no grace period.
 4. **Mobile-first**: the member card and portal must be flawless on a phone — that is where the card lives.
 5. **Performance budget**: public pages LCP < 2.5 s on mid-range mobile; portal interactive < 3 s.
 6. **Backups**: daily automated database backups with tested restore (09).
@@ -259,3 +272,25 @@ Locked — these do **not** appear in 04 as requirements:
 10. Online sponsor self-service portal (sponsors are managed by staff via CRM).
 
 Backlog placement for all of the above: 10 §Post-v1.
+
+---
+
+## 10. Research basis
+
+Facts marked "researched" in this suite were verified against primary or near-primary sources (July 2026). The load-bearing ones:
+
+| Fact | Basis |
+|------|-------|
+| PPL(A) in Romania costs €8,000–10,000; hour building €120–145/h wet | Romanian school price lists ([Aviation Academy](https://aviationacademy.ro/tarife-cursuri-personal-navigant/), [Cruiser Aviation](https://cruiseraviation.com/ro/articole/cat-costa-scoala-de-zbor), [Zbor cu Avionul](https://zborcuavionul.ro/scoala-de-zbor/)) |
+| Aeroclubul României offers **free** gliding/parachuting/ultralight courses for ages 15–23; PPL(A) paid; ~11 territorial aeroclubs | [aeroclubulromaniei.ro](https://aeroclubulromaniei.ro/page/cursuri-gratuite), [ar.ro](https://ar.ro/articol/cursuri-gratuite-2026) |
+| AOPA Romania exists since 2006 (IAOPA member) — advocacy body, not a benefits club | [aopa.ro](https://www.aopa.ro/) |
+| AOPA US dues $59–179/year (membership-price benchmark) | [aopa.org](https://www.aopa.org/membership) |
+| e-Factura: B2C mandatory 2025-01-01; NGOs with economic activity from 2025-07-01 | [mfinante.gov.ro](https://mfinante.gov.ro/en/acasa/-/asset_publisher/uwgr/content/id/11741330), [avocatnet.ro](https://www.avocatnet.ro/articol_67338/e-Factura-ONG-urile-cultele-%C8%99i-agricultorii-persoane-fizice-scap%C4%83-temporar-de-obliga%C8%9Bia-folosirii-sistemului.html) |
+| OG 26/2000: dues set by general assembly, equal within member category; member register | [legislatie.just.ro](https://legislatie.just.ro/Public/DetaliiDocument/20740), [lege5.ro](https://lege5.ro/Gratuit/gi3tsnrt/ordonanta-nr-26-2000-cu-privire-la-asociatii-si-fundatii) |
+| Accounting retention: 5 years for supporting documents, 10 for financial statements (Law 36/2023) | [contzilla.ro](https://www.contzilla.ro/documentele-contabile-se-vor-pastra-in-arhiva-contabila-5-ani-in-loc-de-10-ani/), [accace.ro](https://www.accace.ro/pastrarea-si-arhivarea-documentelor-financiar-contabile/) |
+| EAA enforced 2025-06-28; microenterprise services exemption (<10 employees AND <€2M); EN 301 549 v3.2.1 = WCAG 2.1 AA, v4.1.1 (WCAG 2.2) expected 2026 | [accessible.org](https://accessible.org/eaa-ecommerce-services-requirements/), [levelaccess.com](https://www.levelaccess.com/blog/is-wcag-conformance-enough-for-eaa-compliance/) |
+| Stripe Romania: EEA cards ≈ 1.5% + 1 RON, dispute 100 RON; Netopia: 0.99% + 0.30 RON, ~60% local market share | [stripe.com/en-ro/pricing](https://stripe.com/en-ro/pricing), [noda.live Netopia review](https://noda.live/ro/articles/recenzie-netopia-payments) |
+| Next.js 16 is the current LTS (2025-10-21): Turbopack default, `proxy.ts` replaces `middleware.ts` | [nextjs.org/blog/next-16](https://nextjs.org/blog/next-16) |
+| Real GA aerodromes used as examples: Clinceni `LRCN`, Ploiești-Strejnic `LRPV`, Tuzla `LRTZ`, Brașov-Sânpetru `LRSP`, București-Băneasa `LRBS` | [metar-taf.com](https://metar-taf.com/airport/LRCN-clinceni-airfield), [skyvector.com](https://skyvector.com/airport/LRSP/Sanpetru-Airport), AACR aerodrome register |
+
+**Known unknowns (flagged, not guessed):** no public AACR census of active PPL/LAPL holders or of the GA fleet exists — market-size figures in 01/02 are explicit assumptions with a validation plan, not statistics.
