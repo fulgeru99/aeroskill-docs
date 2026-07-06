@@ -1,6 +1,6 @@
 # 04 — Product Requirements Document (Combined)
 
-> **Purpose:** the complete v1 requirements for all three surfaces — **Combined edition**: Fable's 86-requirement skeleton kept intact under its original IDs, rewritten and deepened in Opus's Given/When/Then acceptance-criteria discipline (licensing, payment edges, anti-abuse, NFR crispness), and swept for Codex's form-, list-, and state-level breadth — all under the locked canon of `00-foundation.md`.
+> **Purpose:** the complete v1 requirements for all three surfaces — **Combined edition**: Fable's 84-requirement skeleton kept intact under its original IDs, rewritten and deepened in Opus's Given/When/Then acceptance-criteria discipline (licensing, payment edges, anti-abuse, NFR crispness), and swept for Codex's form-, list-, and state-level breadth — all under the locked canon of `00-foundation.md`.
 
 **How to read:** every requirement has a stable ID (`PUB-`/`MEM-`/`ADM-`/`PLT-`, per 00 §7.1), a MoSCoW priority (**M**ust / **S**hould / **C**ould), a one-line description, and 2–5 acceptance criteria in **Given / When / Then** form (the mandatory format per 00 §7.4). Fable's original IDs (`PUB-001..015`, `MEM-001..022`, `ADM-001..035`, `PLT-001..012`) are preserved unchanged in meaning — only their criteria are deepened; Combined additions continue each sequence with new, higher numbers and are marked *(Combined addition)* with provenance. IDs are assigned once and never reused or renumbered. "Member" always means a person with role `member`; statuses always use the locked vocabularies (00 §7.2); tiers, prices, and identifier formats are 00's and are never re-decided here. Route names follow the canonical map that 05 inherits (`/join`, `/portal/card`, `/verify/{token}`, `/admin/members`, …). The requirement index (§7) is the traceability spine that 07 (flows) and 10 (roadmap) map against.
 
@@ -783,7 +783,7 @@ The traceability spine: 07 maps flows against these IDs; 10 sequences them into 
 | PLT-016 | Onboarding email mini-sequence | S | Platform |
 | PLT-017 | Role-change propagation | M | Platform |
 
-**Totals:** 111 requirements — 20 PUB · 29 MEM · 45 ADM · 17 PLT (70 Must · 37 Should · 4 Could). Fable's 86 originals are all present under their original IDs; the 25 Combined additions carry new, higher numbers.
+**Totals:** 111 requirements — 20 PUB · 29 MEM · 45 ADM · 17 PLT (70 Must · 37 Should · 4 Could). Fable's 84 originals (15 PUB · 22 MEM · 35 ADM · 12 PLT) are all present under their original IDs; the 27 Combined additions (PUB-016..020, MEM-023..029, ADM-036..045, PLT-013..017) carry new, higher numbers.
 
 ---
 
