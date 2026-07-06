@@ -71,6 +71,16 @@ The conclusion is a strategic constraint, not a vanity claim: at 6–10× advoca
 
 Three tiers (Cadet 3000 / Pilot 4500 / Captain 6000 RON — locked, 00 §3.1) form a commitment ladder built as good / better / best: one shared core (card, community, base discounts, events, newsletter) with differentiation by **depth of service, never by withholding basic belonging**.
 
+```mermaid
+flowchart LR
+    S["Student pilot<br/>(P1 Andrei)"] --> C["Cadet — 3000 RON/yr<br/>the volume engine"]
+    E["Enthusiast<br/>(P3 Mihai)"] --> C
+    C -->|"licensed + flying<br/>~20+ h/yr (§3)"| P["Pilot — 4500 RON/yr<br/>'Recomandat piloților activi'"]
+    P -->|"owner / instructor<br/>/ patron"| K["Captain — 6000 RON/yr<br/>the patronage anchor"]
+    C -.->|"stays an enthusiast —<br/>a full member, never a lead"| C
+```
+*The ladder follows the member's flying life, not a paywall: each step is triggered by usage, and staying put is a legitimate outcome.*
+
 - **Why three:** one price excludes either enthusiasts or patrons; four+ splinters benefit negotiation. Three maps cleanly to the personas: enthusiast/student → Cadet, active pilot → Pilot, owner/instructor/patron → Captain. Legally, the three tiers are statutory member categories with general-assembly-set dues (00 §2) — a fourth tier would also mean a statute amendment.
 - **Price psychology (grounded in verified anchors):**
   - **Cadet 3000 RON** (~€600) ≈ four wet rental hours — small against a €8,000–10,000 (~40,000–50,000 RON) license, recouped outright by a single contracted training-package discount (§3), and about half an average monthly net wage (INS ~5,914 RON/mo, Dec 2025) for a full year of membership.
@@ -185,6 +195,18 @@ Three strategic reads:
 2. **Below ~65% the model becomes an acquisition treadmill:** replacing 40% of the base annually means acquisition effort must grow every year just to stand still. This is why the renewal machinery is v1 core (not polish) and why the ≤50%-of-usage contracting rule (§3) is binding — under-recouping members are exactly the ones who churn.
 3. **Tripwire:** if first-cohort renewal tracks below 65% three months into the Y2 renewal season, the response is a benefit-pool review (renegotiate or add contracts until §3's rule clears for the median member of each tier) *before* any acquisition push — retention problems are value problems, not marketing problems.
 
+### Retention mechanics (what earns the renewal)
+
+The reminder sequence prevents *accidental* churn; these mechanics address *decided* churn:
+
+| Mechanic | How it works | Status |
+|----------|--------------|--------|
+| "Your year in the club" recap | The T−30 renewal email opens with the member's year — the benefits their tier delivered, the events held, the contracts added — so value is visible right before the decision | Manual campaign in v1; automated post-v1 |
+| Right-tier honesty | The ≤50%-usage rule plus the low-usage anti-sell (§3): nobody is left renewing a tier that never paid off | Policy from day one |
+| Guest passes as referral engine | Pilot's 2 and Captain's 4 guest passes/year put non-members inside club events — every pass is a warm lead the club didn't pay to acquire | Built into the tiers (00 §3.1) |
+| Founding badge & recognition | The permanent founding-member badge (00 §3.5) turns the first cohort into visible, motivated advocates | Locked offer |
+| No-gap grace renewal | Renewing during the 30-day grace starts the new year from the previous expiry — lateness is never punished (00 §3.2) | v1 core |
+
 ## 6. Go-to-market
 
 **Sequencing** (mirrors milestones in 03 and 10):
@@ -202,6 +224,13 @@ Three strategic reads:
 3. **Organic social** — Romanian GA Facebook groups, Instagram (aviation photography angle courts P3/Mihai).
 4. **The card itself** — every desk verification (`/verify/{token}`) is a live demo in front of non-members.
 5. **The English surface** — visiting and English-speaking pilots find a fully navigable `/en` site (00 §4.4); a credibility wedge no incumbent offers, worked passively rather than as a paid channel.
+
+**Partner pipeline (the other half of GTM).** Members join for benefits, so partner recruitment leads member recruitment by one step throughout:
+
+1. **Before alpha:** 2 anchor contracts — one flight school (a training-package discount, the §3 killer benefit) and one aerodrome (landing-fee relief), both inside the Bucharest cluster.
+2. **Before founding launch:** at least one signed contract in each benefit category a member can check on day one (§3) — at this stage, thin coverage across six categories beats depth in one.
+3. **Before public launch:** the locked gate — ≥5 schools, ≥4 aerodromes, ≥2 sponsors (10).
+4. **Ongoing cadence:** one new partner conversation per week is a sustainable solo-administrator pace; CRM contract-expiry alerts protect the installed base while new logos accrue.
 
 ## 7. Pricing & discount policy
 
@@ -231,6 +260,20 @@ Three strategic reads:
 | R14 | Bilingual quality — machine-flavored Romanian reads as foreign and erodes trust with the exact audience we court | M | M | Romanian copy native-written, English second (01 §6); next-intl catalogs from day one (00 §4.4); layouts sized for the longer Romanian string (05, 08) |
 
 L/I = likelihood / impact (H·M·L). Reviewed quarterly by the administrator.
+
+## 9. Strategy on one page
+
+| Dimension | The bet |
+|-----------|---------|
+| **Position** | The neutral GA buying club — "ACR for pilots" at aviation prices; the modern + bilingual + tangible-benefits space nobody occupies (§1) |
+| **Differentiation** | Contract-backed benefits, a live-verifiable card, neutrality across schools and aerodromes, a bilingual modern surface |
+| **Market** | Honestly unsized (no AACR census); ~5,000–8,000 serviceable carried as a planning assumption; targets need only a sliver (01 §2) |
+| **Tiers** | Cadet 3000 (volume) · Pilot 4500 (margin, "recommended for active pilots") · Captain 6000 (patronage anchor) — annual only, no discounts, founding price-lock the sole mechanism (§2, §7) |
+| **Benefits** | Mapped to researched pain (training €8,000–10,000, rental €120–145/h, landing fees); binding rule: median member recoups dues at ≤ 50% of typical usage (§3) |
+| **Sponsors** | Bronze/Silver/Gold at 10k/25k/50k RON; capped, tasteful, provable placement; renewal on evidence (§4) |
+| **Money** | Dues carry the club (sustainable from ~60 members); sponsors fund depth; renewal is the compounding lever, tripwire at 65% (§5) |
+| **GTM** | Bucharest-first; school desks as the #1 channel; founding cohort doubles as the partner pitch (§6) |
+| **Top risks** | Thin partner coverage at launch, Y2 renewal, positioning drift, statute/tier alignment (§8) |
 
 ---
 
