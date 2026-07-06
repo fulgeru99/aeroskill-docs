@@ -2,20 +2,35 @@
 
 - [Home](/)
 
-- **Claude**
+- **Opus**
 
-  - [Overview](Claude/README.md)
-  - [Foundation](Claude/00-foundation.md)
-  - [Product Vision](Claude/01-product-vision.md)
-  - [Product Strategy](Claude/02-product-strategy.md)
-  - [Implementation Plan](Claude/03-implementation-plan.md)
-  - [PRD](Claude/04-prd.md)
-  - [Information Architecture](Claude/05-information-architecture.md)
-  - [Database Schema](Claude/06-database-schema.md)
-  - [User Flows](Claude/07-user-flows.md)
-  - [Design System](Claude/08-design-system.md)
-  - [Technical Infrastructure](Claude/09-technical-infrastructure.md)
-  - [Roadmap](Claude/10-roadmap.md)
+  - [Overview](Opus/README.md)
+  - [Foundation](Opus/00-foundation.md)
+  - [Product Vision](Opus/01-product-vision.md)
+  - [Product Strategy](Opus/02-product-strategy.md)
+  - [Implementation Plan](Opus/03-implementation-plan.md)
+  - [PRD](Opus/04-prd.md)
+  - [Information Architecture](Opus/05-information-architecture.md)
+  - [Database Schema](Opus/06-database-schema.md)
+  - [User Flows](Opus/07-user-flows.md)
+  - [Design System](Opus/08-design-system.md)
+  - [Technical Infrastructure](Opus/09-technical-infrastructure.md)
+  - [Roadmap](Opus/10-roadmap.md)
+
+- **Fable**
+
+  - [Overview](Fable/README.md)
+  - [Foundation](Fable/00-foundation.md)
+  - [Product Vision](Fable/01-product-vision.md)
+  - [Product Strategy](Fable/02-product-strategy.md)
+  - [Implementation Plan](Fable/03-implementation-plan.md)
+  - [PRD](Fable/04-prd.md)
+  - [Information Architecture](Fable/05-information-architecture.md)
+  - [Database Schema](Fable/06-database-schema.md)
+  - [User Flows](Fable/07-user-flows.md)
+  - [Design System](Fable/08-design-system.md)
+  - [Technical Infrastructure](Fable/09-technical-infrastructure.md)
+  - [Roadmap](Fable/10-roadmap.md)
 
 - **Codex**
 

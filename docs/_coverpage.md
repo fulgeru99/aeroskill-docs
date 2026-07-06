@@ -4,6 +4,6 @@
 
 > Build docs for a general aviation membership platform.
 
-[Claude docs](Claude/README.md)
+[Opus docs](Opus/README.md)
+[Fable docs](Fable/README.md)
 [Codex docs](Codex/README.md)
-

@@ -15,17 +15,17 @@ Start with **`00-foundation.md`** — it is the locked source of truth that ever
 
 | # | Document | What it answers |
 |---|----------|-----------------|
-| 0 | [00-foundation.md](Claude/00-foundation.md) | The canonical decisions everything else inherits — read first |
-| 1 | [01-product-vision.md](Claude/01-product-vision.md) | Why we exist, who we serve, what success looks like |
-| 2 | [02-product-strategy.md](Claude/02-product-strategy.md) | Positioning, tier & sponsor strategy, monetization, GTM, risks |
-| 3 | [03-implementation-plan.md](Claude/03-implementation-plan.md) | Build philosophy, scope slices, milestones, solo Claude Code workflow |
-| 4 | [04-prd.md](Claude/04-prd.md) | Detailed requirements per surface, with IDs & acceptance criteria |
-| 5 | [05-information-architecture.md](Claude/05-information-architecture.md) | Sitemap, navigation, URL/i18n structure, RBAC access map |
-| 6 | [06-database-schema.md](Claude/06-database-schema.md) | Entities, columns, relationships, ERD, RLS posture |
-| 7 | [07-user-flows.md](Claude/07-user-flows.md) | Step-by-step flows across all three surfaces |
-| 8 | [08-design-system.md](Claude/08-design-system.md) | Logo-driven brand, tokens, type, components, member card |
-| 9 | [09-technical-infrastructure.md](Claude/09-technical-infrastructure.md) | Stack, services, environments, security/GDPR, deployment |
-| 10 | [10-roadmap.md](Claude/10-roadmap.md) | Sequenced solo Claude Code build roadmap, phase by phase |
+| 0 | [00-foundation.md](Opus/00-foundation.md) | The canonical decisions everything else inherits — read first |
+| 1 | [01-product-vision.md](Opus/01-product-vision.md) | Why we exist, who we serve, what success looks like |
+| 2 | [02-product-strategy.md](Opus/02-product-strategy.md) | Positioning, tier & sponsor strategy, monetization, GTM, risks |
+| 3 | [03-implementation-plan.md](Opus/03-implementation-plan.md) | Build philosophy, scope slices, milestones, solo Claude Code workflow |
+| 4 | [04-prd.md](Opus/04-prd.md) | Detailed requirements per surface, with IDs & acceptance criteria |
+| 5 | [05-information-architecture.md](Opus/05-information-architecture.md) | Sitemap, navigation, URL/i18n structure, RBAC access map |
+| 6 | [06-database-schema.md](Opus/06-database-schema.md) | Entities, columns, relationships, ERD, RLS posture |
+| 7 | [07-user-flows.md](Opus/07-user-flows.md) | Step-by-step flows across all three surfaces |
+| 8 | [08-design-system.md](Opus/08-design-system.md) | Logo-driven brand, tokens, type, components, member card |
+| 9 | [09-technical-infrastructure.md](Opus/09-technical-infrastructure.md) | Stack, services, environments, security/GDPR, deployment |
+| 10 | [10-roadmap.md](Opus/10-roadmap.md) | Sequenced solo Claude Code build roadmap, phase by phase |
 
 **Suggested reading paths**
 - *Product / strategy reviewer:* 00 → 01 → 02 → 10
