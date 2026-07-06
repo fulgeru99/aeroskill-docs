@@ -67,6 +67,8 @@
 
 ## Member-facing flows (FLOW-01..08)
 
+Public + portal journeys. All portal routes are locale-prefixed per 00 §4.4 (`ro` at root, `/en` prefix); portal behavior is shaped by `member_status` per 05 §5.
+
 ## FLOW-01 — Visitor becomes active member (golden path)
 
 **Actor:** anonymous visitor (personas per 01). **Trigger:** lands on `/` or `/membership`. **Preconditions:** none.
@@ -290,6 +292,8 @@ flowchart LR
 | 6 | Attempt to edit an audit row afterwards | Impossible for every role — the table is insert-only | PLT-007 |
 
 ## Admin flows (FLOW-09..16)
+
+CRM journeys on the Romanian-only admin surface. Every mutating step writes `audit_logs` (PLT-007); every list obeys the ADM-038 guarantees (50-row pagination, URL-encoded filter state, clearable chips, designed empty states); every queue item deep-links to its record (ADM-002).
 
 ## FLOW-09 — Application review (admin)
 
@@ -568,10 +572,13 @@ Invariants the flows above assume everywhere — each one enforced by a named me
 8. **Everything mutating leaves a trace.** Admin actions, job transitions, and webhook effects write `audit_logs` (insert-only) under a real actor label (PLT-007).
 9. **Roles die immediately.** Demotion/deactivation revokes sessions server-side and admin surfaces re-validate the role per request — no stale-claim window (PLT-017).
 10. **Licenses stay in their lane.** `member_licenses` never reaches the card, the verification RPC, or campaign personalization; member edits always reset staff verification (MEM-024/025, ADM-036).
+11. **Money is whole RON.** Every amount in every flow — tier prices, proration, transfers, refunds — is an integer in the single v1 currency (00 §4.3); mismatched amounts are staff decisions (ADM-044, PLT-014), never silent roundings.
 
 ---
 
 ## Error & recovery matrix *(technique adopted from Codex, populated with Combined's failure modes)*
+
+Sixteen failure modes with a decided answer each: how the system detects it, what the person sees, how it recovers, and what the data records. Rows cite their governing requirements inline.
 
 | # | Situation | Detection | User experience | Recovery | Data effect |
 |---|-----------|-----------|-----------------|----------|-------------|

@@ -123,9 +123,12 @@ Enum discipline (Opus craft, kept): controlled vocabularies that never change at
 -- Romanian ULM permits are issued by SAUM, never AACR; Part-FCL and
 -- glider licenses come under AACR or a foreign EASA authority.
 CHECK (
-  (license_type =  'ulm' AND license_authority = 'saum')
+  (license_type = 'ulm' AND license_authority = 'saum')
   OR
-  (license_type <> 'ulm' AND license_authority IN ('aacr','foreign_easa'))
+  (license_type IN ('ppl_a','lapl_a','cpl_a','glider')
+     AND license_authority IN ('aacr','foreign_easa'))
+  OR
+  (license_type = 'other')  -- catch-all: any authority (04 MEM-024)
 )
 ```
 

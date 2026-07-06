@@ -264,6 +264,7 @@ The domain-credibility rule enforced at every boundary.
 - Given license type `ulm`, When authority is selected, Then the UI defaults to `saum` and the server rejects `aacr` — Romanian ULM permits are issued by SAUM, never AACR (00 §6, verified).
 - Given a Part-FCL or glider type (`ppl_a`/`lapl_a`/`cpl_a`/`glider`), When authority is selected, Then only `aacr` or `foreign_easa` is accepted, never `saum`.
 - Given an invalid pairing submitted directly to the server action, When Zod validation runs (PLT-008), Then it is rejected with a localized message — the rule holds even if UI defaults are bypassed.
+- Given license type `other`, When authority is selected, Then any authority (`aacr`/`saum`/`foreign_easa`) is accepted — `other` is the catch-all for documents outside the named types (e.g. balloon or paramotor certificates) and the pairing rule does not constrain it.
 
 **MEM-025 — License data minimization** *(Combined addition — Opus NFR-007)* (S — binding whenever MEM-023 ships)
 License data is sensitive and stays off every public surface.
@@ -560,7 +561,8 @@ The daily heartbeat at `/api/cron/daily` (09 §deployment).
 
 **PLT-006 — Status transition engine** (M)
 Dates drive states; nobody flips statuses by hand.
-- Given a membership at `ends_on + 1 day`, When the job runs, Then `active` → `grace`; Given `ends_on + 31 days` unpaid, Then `grace` → `expired`; member status mirrors the membership (00 §7.2).
+- Given a membership at `ends_on + 1 day` **with no confirmed successor membership**, When the job runs, Then `active` → `grace`; Given `ends_on + 31 days` unpaid, Then `grace` → `expired`; member status mirrors the membership (00 §7.2).
+- Given a membership whose confirmed successor row already exists (renewal, 00 §3.2), When its `ends_on` passes, Then the old row transitions directly to `expired` and the member stays `active` on the successor — no grace period for a superseded row.
 - Given a contract past `ends_on`, When the job runs, Then `active` → `expired` the following day.
 - Given any automatic transition, When it commits, Then it is audit-logged with the job identity as actor.
 

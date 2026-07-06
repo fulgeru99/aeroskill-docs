@@ -228,7 +228,7 @@ A logged-in member's portal is shaped by `member_status` (00 §7.2):
 | Status | Portal behavior |
 |--------|-----------------|
 | *(no application yet)* | Only `/portal/apply` (plus profile/settings); nav prompts the application |
-| `pending` | Dashboard shows awaiting payment/approval and **resumes at the exact incomplete step** (MEM-027 — same Checkout intent, same `ASC-P-NNNNN` reference); card page shows "not yet issued" |
+| `pending` | Dashboard shows awaiting payment/approval and **resumes at the exact incomplete step** (MEM-027 — a fresh Checkout session against the same pending payment; same `ASC-P-NNNNN` reference); card page shows "not yet issued" |
 | `active` | Everything; Renew appears from T−30 (MEM-012) |
 | `grace` | Everything + warning banner with days remaining; Renew is the primary action everywhere; card stays valid (00 §3.2) |
 | `expired` | Card renders grayscale + "Expirat / Expired" (08 §7.3); benefits locked with rejoin prompt, redemption notes unreadable (MEM-026); history/profile/settings intact; Rejoin = fresh anniversary |
