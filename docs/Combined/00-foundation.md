@@ -200,6 +200,8 @@ Tables are **snake_case, plural**.
 | Email template | Șablon de email | `email_templates` |
 | Aircraft | Aeronavă | `aircraft` |
 | Audit log entry | Jurnal de audit | `audit_logs` |
+| Consent event *(append-only history — GDPR Art. 7(1) demonstrability)* | Istoric consimțământ | `consent_events` |
+| Job run *(daily-cron idempotency evidence, PLT-015)* | — | `job_runs` |
 | Club settings | Setări club | `club_settings` |
 
 **Partner** = the four contractable counterparty types (flight school, association, aerodrome, sponsor); polymorphic references use **one-nullable-FK-per-type + CHECK(exactly one)**.
