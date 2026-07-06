@@ -555,7 +555,7 @@ The complete lifecycle-email inventory, via Resend.
 
 **PLT-005 — Scheduled jobs** (M)
 The daily heartbeat at `/api/cron/daily` (09 §deployment).
-- Given the daily schedule, When the job runs, Then it executes: status transitions (PLT-006), renewal reminders, contract/aircraft expiry alerts, and the rejected-application purge (ADM-005).
+- Given the daily schedule, When the job runs, Then it executes: status transitions (PLT-006), renewal reminders, the day-3 onboarding send (PLT-016), contract/aircraft expiry alerts, and the rejected-application purge (ADM-005).
 - Given any run, When it executes, Then it is idempotent and logged with evidence per PLT-015.
 
 **PLT-006 — Status transition engine** (M)
