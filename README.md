@@ -21,19 +21,19 @@ docs/
 
 ## The three suites, compared
 
-A cross-review (July 2026) profiled all three suites against the same 10-dimension rubric — the full comparison with scorecards lives on the [site home page](docs/README.md). The short version:
+A cross-review (July 2026) profiled the three original suites against the same 10-dimension rubric; **Combined** was then synthesized from them under explicit precedence rules (brief is law → verified research → deepest craft → breadth). The full comparison with scorecards lives on the [site home page](docs/README.md). The short version:
 
-| | Opus | Fable | Codex |
-|---|---|---|---|
-| Size | 6,489 lines | 2,614 lines | 11,188 lines |
-| Tier pricing | Own model: free / 490 / 1.490 RON (concept figures) | **Per brief: 3000 / 4500 / 6000 RON/yr, locked** | Deferred — never priced |
-| Requirements | **114 with IDs + Given/When/Then** | 86 with IDs + criteria | ~250–300, no IDs |
-| Research citations | ~0 (real but uncited facts) | **53 links, 26 domains** (laws, market, fees, standards) | 11 (vendor docs) |
-| Database tables | **~43** | 20 (+ SQL RLS sketches) | 29 |
-| Diagrams | **57** | 13 | 9 |
-| Distinctive strength | Deepest per-artifact spec craft | Verified research, brief-fidelity, consistency | Wireframes (64) + breadth |
+| | **Combined** | Opus | Fable | Codex |
+|---|---|---|---|---|
+| Size | 5,177 lines | 6,489 lines | 2,614 lines | 11,188 lines |
+| Tier pricing | **Per brief: 3000 / 4500 / 6000 RON/yr, locked** | Own model: free / 490 / 1.490 RON (concept figures) | Per brief, locked | Deferred — never priced |
+| Requirements | **111 with IDs + Given/When/Then**, + 18 flows + 32 test scenarios | 114 with IDs + Given/When/Then | 84 with IDs + criteria | ~250–300, no IDs |
+| Research citations | **62 links, 29 domains** | ~0 (real but uncited facts) | 53 links, 26 domains | 11 (vendor docs) |
+| Database tables | 24 (+ 47-index catalog, CRUD matrix) | **~43** | 20 (+ SQL RLS sketches) | 29 |
+| Diagrams / wireframes | 21 / 12 | **57** / 0 | 13 / 0 | 9 / **64** |
+| Distinctive strength | Best-of-breed synthesis, on-brief; fixed 8 defects synthesis exposed | Deepest per-artifact spec craft | Verified research, brief-fidelity | Wireframes + breadth |
 
-One-line summary: **Opus specified the most, Codex wrote the most, Fable verified the most** — and **Combined** merges the three under explicit precedence rules (brief is law → verified research → deepest craft → breadth).
+One-line summary: **Opus specified the most, Codex wrote the most, Fable verified the most — Combined merges all three, on-brief, and repaired what synthesis exposed.**
 
 ## Add documentation
 
